@@ -132,7 +132,7 @@ hr {
 
 #content {
 	float: left;
-	width: 650px;
+	width: 760px;
 	margin-bottom: 10px;
 	min-height:400px;
 }
@@ -207,7 +207,7 @@ hr {
 
 #sidebar {
 	float: right;
-	width: 240px;
+	width: 140px;
 	padding-top: 10px;
 	padding-left: 10px;
 	margin-bottom: 20px;
