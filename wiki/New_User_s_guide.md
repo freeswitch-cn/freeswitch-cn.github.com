@@ -46,7 +46,7 @@ title: 新手指南
 
 ## 我的 .gitconfig
 
-<code>
+<pre>
 [alias]
         last = log -1 HEAD
         st = status 
@@ -74,4 +74,4 @@ title: 新手指南
 .gitexcludes
 
 .svn
-</code>
+</pre>
