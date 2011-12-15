@@ -1,6 +1,5 @@
 safe: true
-markdown: rdiscount
 pygments: true
 auto: true
-
+source: .
 com: "freeswitch wiki"
