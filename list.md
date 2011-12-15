@@ -7,7 +7,8 @@ title: 翻译页面列表
 
 * Seven: XX
 * xiaoguang: XX
-* llcxyz:Channel Variables
+* llcxyz: Channel Variables
+
 # 正在校对的文档
 
 * Seven: YY
@@ -17,6 +18,7 @@ title: 翻译页面列表
 
 * Seven: <http://wiki.freeswitch.org/wiki/FreeSwitch_FAQ>
 * xiaoguang: <http://wiki.freeswitch.org/wiki/Ubuntu_Quick_Start>
+* llcxyz: <http://wiki.freeswitch.org/wiki/Channel_Variables>
 
 # 已完成的文档
 
