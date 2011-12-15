@@ -43,3 +43,35 @@ title: 新手指南
 
 * <http://progit.org/>
 * <http://git-scm.org>
+
+## 我的 .gitconfig
+
+<code>
+[alias]
+        last = log -1 HEAD
+        st = status 
+        co = checkout 
+        ci = commit 
+        br = branch
+        df = diff
+        dfc = diff --cached
+        pr = pull --rebase
+        lg = log -p
+        who = shortlog -s --
+
+[color]
+  status = auto
+  branch = auto
+  ui = auto
+
+[master]
+        branch = always
+[core]
+    whitespace = trailing-space,space-before-tab
+    execludes = /Users/seven/.gitexcludes
+[apply]
+    whitespace = fix
+.gitexcludes
+
+.svn
+</code>
