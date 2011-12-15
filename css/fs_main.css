@@ -1,9 +1,11 @@
 #column-content {
 	margin: 0px 0px 0.6em -12.2em; padding: 0px; width: 100%; float: right;
 }
+/**
 #content {
 	margin: 2.8em 0px 0px 12.2em; padding: 0px 1em 1em; position: relative; z-index: 2;
 }
+**/
 #column-one {
 	padding-top: 160px;
 }
