@@ -22,6 +22,7 @@ FreeSWITCH中文文档计划由FreeSWITCH-CN社区发起，众多热心网友参
 * 翻译完的文章加入到 /wiki/index.html 或其它索引页上。
 * 对于公共页面的改动尽量尽快提交，完成一半的工作可以尽快提交，也可以建立本地 branch。建议 copy 全部英文文档，翻译完成的为中文，未翻译的部分仍然保留英文。
 * 一般的流程为：git pull，翻译，git commit，git push。
+* 更多的请参考[新手指南](/wiki/New_User_s_guide.html)。
 
 <br>
 <br>

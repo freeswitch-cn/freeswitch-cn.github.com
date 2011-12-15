@@ -5,6 +5,10 @@ title: 新手指南
 
 # 新手指南
 
+## 练手
+
+大家可以先修改一下这个页面[练练手](/wiki/New_User_s_excersice.html).
+
 ## 流程参考
 
 * 生成 SSH Key pair
@@ -16,6 +20,9 @@ title: 新手指南
 
     git clone git@github.com:freeswitch-cn/freeswitch-cn.github.com.git
 
+* 修改 list.md，增加自己翻译的项目，防止多人重复劳动
+* git commit, git push
+* git pull
 * 翻译
 * git commit
 * git push
