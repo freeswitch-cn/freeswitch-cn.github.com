@@ -2,9 +2,11 @@
 layout: default
 title: {{ site.com }}
 ---
-#通道变量
+##通道变量
+
+----
 <table id="toc" class="toc" summary="Contents">
-<tr><td><div id="toctitle"><h2>Contents</h2></div>
+<tr><td><div id="toctitle"><h2>目录</h2></div>
 <ul>
 <li class="toclevel-1"><a href="#Introduction"><span class="tocnumber">1</span>
 <span class="toctext">简介</span></a>
