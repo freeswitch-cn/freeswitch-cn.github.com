@@ -1,0 +1,246 @@
+.mw-plusminus-null {
+	color: rgb(170, 170, 170);
+}
+.texvc {
+	unicode-bidi: embed; direction: ltr;
+}
+img.tex {
+	vertical-align: middle;
+}
+span.texhtml {
+	font-family: serif;
+}
+.ontop#wikiPreview {
+	margin-bottom: 1em;
+}
+#toolbar {
+	clear: both;
+}
+#wpTextbox1 {
+	clear: both;
+}
+div#mw-js-message {
+	margin: 1em 5%; padding: 0.5em 2.5%; border: 1px solid rgb(221, 221, 221); background-color: rgb(252, 252, 252);
+}
+.editsection {
+	margin-left: 5px; float: right;
+}
+table.filehistory {
+	border: 1px solid rgb(204, 204, 204); border-collapse: collapse;
+}
+table.filehistory th {
+	padding: 0px 0.2em; border: 1px solid rgb(204, 204, 204); vertical-align: top;
+}
+table.filehistory td {
+	padding: 0px 0.2em; border: 1px solid rgb(204, 204, 204); vertical-align: top;
+}
+table.filehistory th {
+	text-align: left;
+}
+table.filehistory td.mw-imagepage-filesize {
+	white-space: nowrap;
+}
+table.filehistory th.mw-imagepage-filesize {
+	white-space: nowrap;
+}
+table.filehistory td.filehistory-selected {
+	font-weight: bold;
+}
+li span.deleted {
+	color: rgb(136, 136, 136); font-style: italic; text-decoration: line-through;
+}
+span.history-deleted {
+	color: rgb(136, 136, 136); font-style: italic; text-decoration: line-through;
+}
+body.ltr td.mw-label {
+	text-align: right;
+}
+body.ltr td.mw-input {
+	text-align: left;
+}
+body.ltr td.mw-submit {
+	text-align: left;
+}
+body.rtl td.mw-label {
+	text-align: left;
+}
+body.rtl td.mw-input {
+	text-align: right;
+}
+body.rtl td.mw-submit {
+	text-align: right;
+}
+td.mw-label {
+	vertical-align: top;
+}
+td.mw-submit {
+	white-space: nowrap;
+}
+body.rtl .thumbcaption {
+	text-align: right;
+}
+body.rtl .magnify {
+	float: left;
+}
+body.ltr .thumbcaption {
+	text-align: left;
+}
+body.ltr .magnify {
+	float: right;
+}
+.mw-hidden-cats-hidden {
+	display: none;
+}
+.catlinks-allhidden {
+	display: none;
+}
+p.mw-ipb-conveniencelinks {
+	font-size: 90%; float: right;
+}
+p.mw-protect-editreasons {
+	font-size: 90%; float: right;
+}
+p.mw-filedelete-editreasons {
+	font-size: 90%; float: right;
+}
+p.mw-delete-editreasons {
+	font-size: 90%; float: right;
+}
+div.searchresult {
+	width: 38em; font-size: 95%;
+}
+.mw-search-results li {
+	list-style: none; padding-bottom: 1em;
+}
+.mw-search-result-data {
+	color: green; font-size: 97%;
+}
+td#mw-search-menu {
+	padding-left: 6em; font-size: 85%;
+}
+div#mw-search-interwiki {
+	border: 1px solid rgb(170, 170, 170); width: 18em; margin-top: 2ex; float: right;
+}
+div#mw-search-interwiki li {
+	font-size: 95%;
+}
+.mw-search-interwiki-more {
+	font-size: 90%; float: right;
+}
+span.searchalttitle {
+	font-size: 95%;
+}
+div.searchdidyoumean {
+	color: rgb(204, 0, 0); font-size: 127%; margin-top: 1ex; margin-bottom: 1ex;
+}
+div.searchdidyoumean em {
+	font-weight: bold;
+}
+.searchmatch {
+	font-weight: bold;
+}
+div.searchresults {
+	padding: 10px 20px; border: 1px solid darkblue;
+}
+.mw-userrights-disabled {
+	color: rgb(136, 136, 136);
+}
+table.mw-userrights-groups * td {
+	padding-right: 1.5em;
+}
+table.mw-userrights-groups * th {
+	padding-right: 1.5em;
+}
+.os-suggest {
+	border: 1px solid rgb(170, 170, 170); left: 0px; top: 0px; width: 0px; overflow: auto; font-size: 95%; visibility: hidden; position: absolute; z-index: 99; overflow-x: hidden; background-color: window;
+}
+table.os-suggest-results {
+	border: 0px currentColor; width: 100%; font-size: 95%; border-collapse: collapse; cursor: pointer;
+}
+td.os-suggest-result {
+	padding: 2px; color: windowtext; white-space: nowrap; background-color: window;
+}
+td.os-suggest-result-hl {
+	padding: 2px; color: windowtext; white-space: nowrap; background-color: window;
+}
+td.os-suggest-result-hl {
+	color: white; background-color: rgb(76, 89, 166);
+}
+td.os-suggest-result-hl-webkit {
+	color: white; background-color: rgb(76, 89, 166);
+}
+td.os-suggest-result-hl {
+	color: highlighttext; background-color: highlight;
+}
+.os-suggest-toggle {
+	left: 1ex; font-size: 65%; position: relative;
+}
+.os-suggest-toggle-def {
+	left: 0px; top: 0px; font-size: 65%; visibility: hidden; position: absolute;
+}
+.autocomment {
+	color: gray;
+}
+#pagehistory .history-user {
+	margin-right: 0.2em; margin-left: 0.4em;
+}
+#pagehistory span.minor {
+	font-weight: bold;
+}
+#pagehistory li {
+	border: 1px solid white;
+}
+#pagehistory li.selected {
+	border: 1px dashed rgb(170, 170, 170); background-color: rgb(249, 249, 249);
+}
+table.mw-listgrouprights-table {
+	border: 1px solid rgb(204, 204, 204); border-collapse: collapse;
+}
+table.mw-statistics-table {
+	border: 1px solid rgb(204, 204, 204); border-collapse: collapse;
+}
+table.mw-listgrouprights-table tr {
+	vertical-align: top;
+}
+table.mw-listgrouprights-table td {
+	padding: 0.5em 0.2em; border: 1px solid rgb(204, 204, 204);
+}
+table.mw-listgrouprights-table th {
+	padding: 0.5em 0.2em; border: 1px solid rgb(204, 204, 204);
+}
+table.mw-statistics-table td {
+	padding: 0.5em 0.2em; border: 1px solid rgb(204, 204, 204);
+}
+table.mw-statistics-table th {
+	padding: 0.5em 0.2em; border: 1px solid rgb(204, 204, 204);
+}
+td.mw-statistics-numbers {
+	text-align: right;
+}
+h4.mw-specialpagesgroup {
+	margin: 0.3em 0em 0em; padding: 2px; background-color: rgb(220, 220, 220);
+}
+.mw-specialpagerestricted {
+	font-weight: bold;
+}
+#shared-image-dup {
+	font-style: italic;
+}
+#shared-image-conflict {
+	font-style: italic;
+}
+table.mw-emailuser-table {
+	width: 98%;
+}
+td#mw-emailuser-sender {
+	font-weight: bold;
+}
+td#mw-emailuser-recipient {
+	font-weight: bold;
+}
+div.mw-warning-with-logexcerpt {
+	padding: 3px; border: 2px solid rgb(47, 111, 171); margin-bottom: 3px;
+}
+div.mw-warning-with-logexcerpt ul li {
+	font-size: 90%;
+}

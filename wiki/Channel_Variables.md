@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: default_with_fs
 title: {{ site.com }}
 ---
 ##通道变量
