@@ -29,6 +29,7 @@ title: 新手指南
 * git commit, git push
 * git pull
 * 翻译
+* git diff (**这个很重要，提交前一定先 diff 一下**)
 * git commit
 * git push
 
