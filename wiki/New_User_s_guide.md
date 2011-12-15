@@ -9,6 +9,11 @@ title: 新手指南
 
 大家可以先修改一下这个页面[练练手](/wiki/New_User_s_excersice.html).
 
+## 文件格式
+
+* [翻译规范](http://www.freeswitch.org.cn/blog/past/2009/11/22/guan-yu-freeswitchwen-dang-fan-yi-de-yi-jian/)
+* 新建页面只需在 wiki/ 目录下新建一个 xxx.md 文件，在其它文件中加入链接请参考其它已存在的页面。
+
 ## 流程参考
 
 * 生成 SSH Key pair
