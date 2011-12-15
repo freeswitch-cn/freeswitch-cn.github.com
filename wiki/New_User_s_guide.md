@@ -44,7 +44,9 @@ title: 新手指南
 * <http://progit.org/>
 * <http://git-scm.org>
 
-## 我的 .gitconfig
+## 我的 git config
+
+.gitconfig
 
 <pre>
 [alias]
@@ -71,7 +73,10 @@ title: 新手指南
     execludes = /Users/seven/.gitexcludes
 [apply]
     whitespace = fix
+
+</pre>
 .gitexcludes
 
+<pre>
 .svn
 </pre>
