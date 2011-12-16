@@ -6,7 +6,7 @@ title: {{ site.com }}
 
 ####翻译中...
 
-####翻译:llcxyz
+####翻译:CH.LAU(llc_xyz@qq.com)
 
 ----
 <table id="toc" class="toc" summary="Contents">
