@@ -4,6 +4,10 @@ title: {{ site.com }}
 ---
 ##通道变量
 
+####翻译中...
+
+####翻译:llcxyz
+
 ----
 <table id="toc" class="toc" summary="Contents">
 <tr><td><div id="toctitle"><h2>目录</h2></div>
