@@ -15,7 +15,7 @@ title: {{ site.com }}
 <span class="toctext">XML 拨号计划中设置通道变量</span></a>
 <ul>
 <li class="toclevel-3"><a href="#Scoped_Variables"><span class="tocnumber">1.1.1</span>
-<span class="toctext">通道变量作用域</span></a></li>
+<span class="toctext">限定作用域的通道变量</span></a></li>
 </ul>
 </li>
 <li class="toclevel-2"><a href="#Channel_Variables_in_Dial_strings"><span class="tocnumber">1.2</span>
@@ -373,25 +373,30 @@ title: {{ site.com }}
 ------
 
 
-<a name="Introduction" id="Introduction"></a><h2> <span class="mw-headline"> Introduction </span></h2>
-<p>There are a number of channel variables that can be set in the dialplan or your application to effect the progress or settings for a call. Channel variables can also be set in dialstrings (see below). 
+<a name="Introduction" id="Introduction"></a><h2> 
+<span class="mw-headline"> 简介</span></h2>
+<p>在拨号计划或者你的应用中可以设置很多个通道变量，用来设置呼叫参数.或者控制呼叫流程
 </p>
-<a name="Channel_Variables_in_the_XML_Dialplan" id="Channel_Variables_in_the_XML_Dialplan"></a><h3> <span class="mw-headline"> Channel Variables in the XML Dialplan </span></h3>
-<p>Channel variables are set, appropriately enough, with the <i>set</i> application like this:
+<a name="Channel_Variables_in_the_XML_Dialplan" id="Channel_Variables_in_the_XML_Dialplan"></a><h3> 
+<span class="mw-headline"> 在XML拨号计划中设置通道变量 </span></h3>
+<p>使用应用<i>set</i> 来设置通道变量:
 </p>
 <pre>&lt;action application="set" data="var_name=var value"/&gt;
 </pre>
-<p>Accessing channel variables requires the ${} syntax:
+<p>引用通道变量，需要使用${} 语法:
 </p>
 <pre>&lt;action application="log" data="INFO The value in the var_name chan var is ${var_name}"/&gt;
 </pre>
-<a name="Scoped_Variables" id="Scoped_Variables"></a><h4> <span class="mw-headline"> Scoped Variables </span></h4>
-<p>- Channel variables used to be global to the session.<br />
-- With Scoped variables, you can now set variables that only exist for the duration of that single application execution and any subsequent applications under it.<br />
-- Applications can leverage this concept to use named input params<br />
+
+<a name="Scoped_Variables" id="Scoped_Variables"></a><h4> 
+<span class="mw-headline"> 限定作用域的通道变量 </span></h4>
+<p>- 之前，通道变量对会话是全局的.也就是说，通道变量只要设置一次，便可存在于整个会话中.<br />
+- 使用限定作用域的通道变量, 你可以让通道变量只存在于单个应用和该应用下任何后续的应用执行期间.<br />
+- 应用可以利用这个特性使用已经命名的输入参数<br />
 <br />
-As of June 15 (git commit b2c3199f) you may now have scoped variables that will stay in effect only for the duration of a given dialplan application. 
-Example:
+从 2011年 6月15日 (git commit b2c3199f) 后， 你应该可以使用限定作用域的通道变量了，它只会在某一个给定的拨号计划应用执行期间有效.
+也就是说，当这个应用执行完成，该变量将失效.
+请看以下例子:
 </p>
 <pre>
 &lt;action application=&quot;log&quot; data=&quot;INFO myvar is '${myvar}'&quot;/&gt;
