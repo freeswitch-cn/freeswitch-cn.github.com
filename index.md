@@ -3,11 +3,9 @@ layout: default
 title: {{ site.com }}
 ---
 
-欢迎来到 FreeSWITCH-CN WIKI.
-
 FreeSWITCH中文文档计划由FreeSWITCH-CN社区发起，众多热心网友参与其中。
 
-长期以来，除了[Seven Du](http://about.me/dujinfang) 同学的[《FreeSWITCH:VoIP实战》](http://www.freeswitch.or.cn/document)这一本电子书外，FreeSWITCH中文资料较少，给大家学习带来诸多不便。日前，在QQ群众多网友的倡议下，启动FreeSWITCH中文文档计划。
+长期以来，除了[Seven Du](http://about.me/dujinfang) 同学的[《FreeSWITCH:VoIP实战》](http://www.freeswitch.or.cn/document)这一本电子书外，FreeSWITCH中文资料较少，给大家学习带来诸多不便。日前，在QQ群众多网友的倡议下，启动FreeSWITCH中文文档计划。**我们的主要目标是将[英文wiki](http://wiki.freeswitch.org)上的主要内容翻译成中文，以供大家学习参考**。
 
 目前计划刚刚开始，请大家踊跃报名，暂时一些约定如下（请大家补充）：
 

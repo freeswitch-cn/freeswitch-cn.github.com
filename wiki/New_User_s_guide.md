@@ -13,6 +13,7 @@ title: 新手指南
 
 * [翻译规范](http://www.freeswitch.org.cn/blog/past/2009/11/22/guan-yu-freeswitchwen-dang-fan-yi-de-yi-jian/)
 * 新建页面只需在 wiki/ 目录下新建一个 xxx.md 文件，在其它文件中加入链接请参考其它已存在的页面。
+* 请在每个页面上加入到原始wiki页面的链接。
 
 ## 流程参考
 
@@ -32,6 +33,7 @@ title: 新手指南
 * git diff (**这个很重要，提交前一定先 diff 一下**)
 * git commit
 * git push
+* 完了以后看看自己的劳动成果 :)  <https://github.com/freeswitch-cn/freeswitch-cn.github.com/commits/master>
 
 ## 翻译进度
 

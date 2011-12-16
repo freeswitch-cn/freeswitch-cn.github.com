@@ -2,4 +2,4 @@ safe: true
 pygments: true
 auto: true
 markdown: rdiscount
-com: "freeswitch wiki"
+com: "FreeSWITCH中文Wiki"
