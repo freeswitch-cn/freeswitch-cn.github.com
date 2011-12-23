@@ -423,7 +423,7 @@ title: {{ site.com }}
 </li></ul>
 <pre>[var1=abc,var2=def,var3=ghi]sofia/default/blah@baz.com&lt;/pre&gt;
 </pre>
-<ul><li>如果你想让中括号[]内的变量覆盖同名大括号{}内设置的变量值, 你可以在大括号{}内先设定 'local_var_clobber=true' ,例如:
+<ul><li>如果你想让中括号[]内的变量覆盖同名大括号{}内设置的变量值,你可以在大括号{}内先设定 'local_var_clobber=true' ,例如:
 </li></ul>
 <pre>{local_var_clobber=true,sip_secure_media=true}sofia/default/blah1@baz.com|sofia/default/johndoe@example.com|[sip_secure_media=false]sofia/default/janedoe@acme.com
 </pre>
@@ -432,7 +432,7 @@ title: {{ site.com }}
 <a name="Handling_Variables_With_Commas" id="Handling_Variables_With_Commas"></a><h4> 
 <span class="mw-headline"> 关于逗号分隔字符串的处理 </span></h4>
 <p>自从使用逗号作为 {} 和 [] 内变量的分隔符号，就有必要处理变量内含有逗号情况下的逗号的转义. 
-</p><p>设置一个包含了","的通道变量  (比如: the absolute_codec_string), 这个时候你得告诉FREESWITCH用那个值代替做为分隔符.
+</p><p>设置一个包含了","的通道变量  (比如: the absolute_codec_string), 这个时候你得告诉FREESWITCH用那个值代替逗号.
 </p><p>方法是放一个前缀 ^^: 在这个值的前面， 使用":" 代替<i>逗号</i>  这个时候， FreeSWITCH 在迭代变量值时，将把给定的值替换成逗号.
 </p><p>你可以用任意你喜欢的字符放在^^后面,FREESWITCH会将这个字符转换成逗号.
 </p>
