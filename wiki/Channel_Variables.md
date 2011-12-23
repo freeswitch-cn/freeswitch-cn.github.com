@@ -408,41 +408,45 @@ title: {{ site.com }}
 &lt;action application=&quot;log&quot; data=&quot;INFO myvar is '${myvar}'&quot;/&gt;
 &lt;action application=”myapp” data=”%[var1=val1,var2=val2]mydata”/&gt;
 </pre>
-<a name="Channel_Variables_in_Dial_strings" id="Channel_Variables_in_Dial_strings"></a><h3> <span class="mw-headline"> Channel Variables in Dial strings </span></h3>
-<p>The syntax of using { } versus [] is explained below.
+<a name="Channel_Variables_in_Dial_strings" id="Channel_Variables_in_Dial_strings"></a><h3> 
+<span class="mw-headline"> 拨号字符串中的通道变量 </span></h3>
+<p>使用大括号{ } 和 中括号[] 的语法解释如下:
 </p>
-<ul><li>{foo=bar} is <b>only</b> valid at the beginning of the dial string. It will set the same variables on <b>every</b> channel.
-</li><li>[foo=bar] goes before each individual dial string and will set the variable values specified for only this channel.
+<ul><li>{foo=bar} <b>只能</b>用在拨号字符串的开头. 它会在<p>每个</p>通道上设置相同的值.
+</li><li>[foo=bar] 它设置在某个特定的拨号字符串的前面，此通道变量值只对当前通道有效.
 </li></ul>
-<ul><li>The following example sets the foo variable for all channels implemented and chan=1 is specific to blah, while chan=2 is specific to blah2
+<ul><li>下面这个例子设置变量foo=bar 到所有通道，设置 chan=1 到blah  同时设置chan=2 到 blah2
 </li></ul>
 <pre>{foo=bar}[chan=1]sofia/default/blah@baz.com,[chan=2]sofia/default/blah2@baz.com
 </pre>
-<ul><li>Setting multiple variables can be accomplished by comma delimiting:
+<ul><li>设置多个通道变量可以用逗号"," 分隔.
 </li></ul>
 <pre>[var1=abc,var2=def,var3=ghi]sofia/default/blah@baz.com&lt;/pre&gt;
 </pre>
-<ul><li>If you would like to have variables in [] override the same variables set in {}, you may set 'local_var_clobber=true' inside {}. For example:
+<ul><li>如果你想让中括号[]内的变量覆盖同名大括号 {} 内设置的变量值, 你可以在大括号{}内先设定 'local_var_clobber=true' ,例如:
 </li></ul>
 <pre>{local_var_clobber=true,sip_secure_media=true}sofia/default/blah1@baz.com|sofia/default/johndoe@example.com|[sip_secure_media=false]sofia/default/janedoe@acme.com
 </pre>
-<p>In this example, the legs for blah1@baz.com and johndoe@example.com would be set to offer SRTP (RTP/SAVP) while janedoe@acme.com would not receive an SRTP offer (she would see RTP/AVP instead).
+<p>在上面这个例子中, 被叫方 blah1@baz.com 和 johndoe@example.com 将启用 SRTP (RTP/SAVP),而 被叫janedoe@acme.com 将不启用SRTP (在sip消息里只会看到 RTP/AVP 而不是RTP/SAVP).
 </p>
-<a name="Handling_Variables_With_Commas" id="Handling_Variables_With_Commas"></a><h4> <span class="mw-headline"> Handling Variables With Commas </span></h4>
-<p>Since commas are the default delimiter inside of {} and [] it is necessary to have an alternate means of delimiting values that actually contain commas.
-</p><p>To set a variable with a "," inside of it (e.g. the absolute_codec_string), you must tell FreeSWITCH what delimiter to use instead for THIS value.
-</p><p>The syntax is to put a prefix of ^^: at the start of the value and replace the <i>commas in the value</i> with ":". Then, FreeSWITCH will substitute commans back in when setting the value for the channel.
-</p><p>You can use any (almost) character you like though, it uses the one after the initial "^^"
+<a name="Handling_Variables_With_Commas" id="Handling_Variables_With_Commas"></a><h4> 
+<span class="mw-headline"> 关于逗号分隔字符串的处理 </span></h4>
+<p>自从使用逗号作为 {} 和 [] 内变量的分隔符号，就有必要处理变量内含有逗号情况下的逗号的转义. 
+</p><p>设置一个包含了","的通道变量  (比如: the absolute_codec_string), 这个时候你得告诉FREESWITCH用那个值代替做为分隔符.
+</p><p>方法是放一个前缀 ^^: 在这个值的前面， 使用":" 代替<i>逗号</i>  这个时候， FreeSWITCH 在迭代变量值时，将把给定的值替换成逗号.
+</p><p>你可以用任意你喜欢的字符放在^^后面,FREESWITCH会将这个字符转换成逗号.
 </p>
 <pre>{absolute_codec_string=^^:PCMA@8000h@20i@64000b:PCMU@8000h@20i@64000b:G729@8000h@20i@8000b,leg_time_out=10,process_cdr=b_only}
 </pre>
-<a name="Exporting_Channel_Variables_in_Bridge_Operations" id="Exporting_Channel_Variables_in_Bridge_Operations"></a><h3> <span class="mw-headline"> Exporting Channel Variables in Bridge Operations </span></h3>
-<p>You can export a variable from one call leg (A) to the other call leg (B) by using the 'export_vars' variable which is a comma separated list of variables that you wish to propagate across calls.
-Usage:
+<a name="Exporting_Channel_Variables_in_Bridge_Operations" id="Exporting_Channel_Variables_in_Bridge_Operations"></a><h3>
+ <span class="mw-headline"> 在桥接操作中导出通道变量</span></h3>
+<p>你可以使用" export_vars " 导出你需要跨呼叫使用的变量  从一个call leg(A) 到另一个 call leg (B),
+多个通道变量使用逗号分隔.
+用法:
 </p>
 <pre>&lt;action application="set" data="export_vars=myvar,myvar2,foo,bar"/&gt;
 </pre>
-<p>You can also set a variable on the (A) leg and add it to the export list in one step with the export application:
+<p>你也可以使用export 应用，从 (A) leg 导出变量到导出列表中:
 </p>
 <pre>&lt;action application="export" data="myvar=true"/&gt;
 </pre>
