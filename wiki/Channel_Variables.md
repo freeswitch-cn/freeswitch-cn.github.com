@@ -412,10 +412,10 @@ title: {{ site.com }}
 <span class="mw-headline"> 拨号字符串中的通道变量 </span></h3>
 <p>使用大括号{ } 和 中括号[] 的语法解释如下:
 </p>
-<ul><li>{foo=bar} <b>只能</b>用在拨号字符串的开头. 它会在<p>每个</p>通道上设置相同的值.
+<ul><li>{foo=bar} <b>只能</b>用在拨号字符串的开头. 它会在每个通道上设置相同的值.
 </li><li>[foo=bar] 它设置在某个特定的拨号字符串的前面，此通道变量值只对当前通道有效.
 </li></ul>
-<ul><li>下面这个例子设置变量foo=bar 到所有通道，设置 chan=1 到blah  同时设置chan=2 到 blah2
+<ul><li>下面这个例子设置变量foo=bar 到所有通道,设置 chan=1 到blah  同时设置chan=2 到 blah2
 </li></ul>
 <pre>{foo=bar}[chan=1]sofia/default/blah@baz.com,[chan=2]sofia/default/blah2@baz.com
 </pre>
@@ -423,7 +423,7 @@ title: {{ site.com }}
 </li></ul>
 <pre>[var1=abc,var2=def,var3=ghi]sofia/default/blah@baz.com&lt;/pre&gt;
 </pre>
-<ul><li>如果你想让中括号[]内的变量覆盖同名大括号 {} 内设置的变量值, 你可以在大括号{}内先设定 'local_var_clobber=true' ,例如:
+<ul><li>如果你想让中括号[]内的变量覆盖同名大括号{}内设置的变量值, 你可以在大括号{}内先设定 'local_var_clobber=true' ,例如:
 </li></ul>
 <pre>{local_var_clobber=true,sip_secure_media=true}sofia/default/blah1@baz.com|sofia/default/johndoe@example.com|[sip_secure_media=false]sofia/default/janedoe@acme.com
 </pre>
