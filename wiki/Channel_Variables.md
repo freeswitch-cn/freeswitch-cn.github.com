@@ -451,7 +451,7 @@ title: {{ site.com }}
 <pre>&lt;action application="export" data="myvar=true"/&gt;
 </pre>
 <a name="Using_Channel_Variables_in_Dialplan_Condition_Statements" id="Using_Channel_Variables_in_Dialplan_Condition_Statements"></a><h3> <span class="mw-headline"> Using Channel Variables in Dialplan Condition Statements </span></h3>
-<p>Channel variables can be used in conditions:
+<p>通道变量可用于以下情况下:
 </p>
 <ul><li> See <a href="/wiki/Dialplan_XML#Condition" title="Dialplan XML">this</a> page for specifics.
 </li><li> Keep in mind that some channel variables may not be set during the dialplan parsing phase. See <a href="/wiki/Dialplan_XML#Inline_Actions" title="Dialplan XML">inline actions</a> section of <a href="/wiki/Dialplan_XML" title="Dialplan XML">Dialplan_XML</a> for more information.
