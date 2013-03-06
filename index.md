@@ -12,7 +12,7 @@ FreeSWITCH中文文档计划由FreeSWITCH-CN社区发起，众多热心网友参
 * 使用 github-pages，用法参见 <http://pages.github.com/>
 * 尽量使用 UNIX 换行符（\n 而不是 \r\n）
 * 使用 UTF-8 编码（注意，windows的记事本会在文件开头写入BOM，请不要使用它，建议使用notepad++）
-* 参照[翻译规范](http://www.freeswitch.org.cn/2009/11/22/guan-yu-freeswitchwen-dang-fan-yi-de-yi-jian.html)
+* 参照[关于FreeSWITCH文档翻译的意见](http://www.freeswitch.org.cn/2009/11/22/guan-yu-freeswitchwen-dang-fan-yi-de-yi-jian.html)
 * 大家自己选择感兴趣的文章进行翻译，但请在[进度](/list.html)中注明，以避免重复翻译
 * 报名参加翻译请在QQ群或邮件列表中将github账号发给 Seven Du。
 * 源文件为 markdown 格式，上传到 github 上会自动转成 html，有条件的同学可以在本地使用 *jekyll --server* 即时查看结果
