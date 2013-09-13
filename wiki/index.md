@@ -9,3 +9,4 @@ title: Wiki
 * [FreeSwitch_FAQ](/wiki/FreeSWITCH_FAQ.html)
 * [Mod_dptools](/wiki/mod_dptools.html)
 * [Channel_Variables](/wiki/Channel_Variables.html) 
+* [Mod_Lua](/wiki/Mod_lua.html)
