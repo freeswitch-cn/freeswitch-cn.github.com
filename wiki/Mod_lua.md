@@ -1,19 +1,24 @@
-目录：   
+---
+title: Lua
+layout: default
+---
 
-	* 1 Lua特性   
-		* 1.1 写IVR脚本   
-		* 1.2 写事件钩子   
-		* 1.3 Serve configs (与mod_xml_curl功能相同)   
-		* 1.4 从lua中发起API呼叫   
-		* 1.5 轻量级  
-		* 1.6 高度内嵌   
+# 目录：
+
+	* 1 Lua特性
+		* 1.1 写IVR脚本
+		* 1.2 写事件钩子
+		* 1.3 Serve configs (与mod_xml_curl功能相同)
+		* 1.4 从lua中发起API呼叫
+		* 1.5 轻量级
+		* 1.6 高度内嵌
 		* 1.7 关于lua学习
-		* 1.8 Cli中的lua与luarun   
-			* 1.8.1 参数传递   
-			
+		* 1.8 Cli中的lua与luarun
+			* 1.8.1 参数传递
+
 	* 2 配置
-		* 2.1 事件钩子    
-			* 2.1.1 事件钩子脚本   
+		* 2.1 事件钩子
+			* 2.1.1 事件钩子脚本
 		* 2.2 针对IVR用途的配置
 		* 2.3 针对API呼叫的配置
 		* 2.4 调用其他lua脚本
@@ -127,13 +132,13 @@
 ## Features ##
 
 #### 写IVR脚本 ####
-Lua的语法非常简单易用。查看示例： [Hello Lua](#Hello_Lua) 脚本。   
+Lua的语法非常简单易用。查看示例： [Hello Lua](#Hello_Lua) 脚本。
 
 #### 写事件钩子 ####
 你可以定义一个Lua脚本，用于每次特定事件被触发的时候执行。  查看示例: [Event_Hooks](#Mod_lua)
 
 #### Serve configs (与mod_xml_curl功能相同) ####
-Lua可以为xml_curl模块提供配置文件服务，不需要xml_curl去请求web服务器。具体请看：[Serving_Configuration](#Mod_lua)   
+Lua可以为xml_curl模块提供配置文件服务，不需要xml_curl去请求web服务器。具体请看：[Serving_Configuration](#Mod_lua)
 
 #### 从lua中发起API呼叫 ####
 [Examples](#Make_API_calls)
@@ -148,16 +153,16 @@ Lua可以为xml_curl模块提供配置文件服务，不需要xml_curl去请求w
 这里有一份Lua与JavaScript在某些特性方面的对比，详见[Learning Lua From JS](http://phrogz.net/lua/LearningLua_FromJS.html).
 
 #### Cli中的lua与luarun ####
-你可以通过使用命令“luarun /path/to/script.lua”，启动一个线程来跑你的lua脚本。“lua”命令用于拨号方案的内联lua，如 ${lua(codehere)}。“luarun”会创建一个进程来异步运行，而“lua”将会阻塞直到代码执行结束。在参数前面加上“~”，会运行单行的lua命令。    
+你可以通过使用命令“luarun /path/to/script.lua”，启动一个线程来跑你的lua脚本。“lua”命令用于拨号方案的内联lua，如 ${lua(codehere)}。“luarun”会创建一个进程来异步运行，而“lua”将会阻塞直到代码执行结束。在参数前面加上“~”，会运行单行的lua命令。
 需要注意的是，通过luarun执行的脚本不能通过stream：write API向控制台写入，因为没有stream对象。
 
 ##### 参数传递 #####
-在向lua传递参数时，是用空格隔开各个参数值，如下：   
+在向lua传递参数时，是用空格隔开各个参数值，如下：
  luarun arg1 arg2 arg3
 
-lua中是以argv对象来获取传递进来的参数，如下：   
- my_first_var = argv[1];    
- my_next_var = argv[2];    
+lua中是以argv对象来获取传递进来的参数，如下：
+ my_first_var = argv[1];
+ my_next_var = argv[2];
 以此类推。。。
 
 	 freeswitch@DVORAK> lua ~print(string.find("1234#5678", "(%d+)#(%d+)"))
@@ -191,7 +196,7 @@ lua中是以argv对象来获取传递进来的参数，如下：
 	local uuid = event:getHeader("Unique-ID")
 	local tone = event:getHeader("Detected-Tone")
 	freeswitch.consoleLog("info", uuid .. " detected tone: " .. tone .. "\n")
-	
+
 
 ### 针对IVR用途的配置 ###
 
@@ -223,7 +228,7 @@ FreeSWITH是从静态XML文件中请求并加载配置文件数据，而Lua模�
 	    <!--
 		The following options identifies a lua script that is launched
 		at startup and may live forever in the background.
-		You can define multiple lines, one for each script you 
+		You can define multiple lines, one for each script you
 		need to run.
 	    -->
 	    <!--<param name="startup-script" value="startup_script_1.lua"/>-->
@@ -235,20 +240,20 @@ FreeSWITH是从静态XML文件中请求并加载配置文件数据，而Lua模�
 这些脚本分别运行在各自独立的线程中。你可以利用这些脚本处理一些简单的任务（处理完就关闭），或者让这些脚本处于死循环中，进行监控事件、发起呼叫等操作。
 
 ## 拨号方案示例 ##
-	
-	 <action application="lua" data="helloworld.lua arg1 arg2"/> 
+
+	 <action application="lua" data="helloworld.lua arg1 arg2"/>
 
 注1：在脚本中，可以通过argv[1]和argv[2]来访问传递进来的参数。
 注2：默认到prefix/scripts目录中寻找helloworld.lua文件。
 
 ## 拨号方案示例-内嵌扩展 ##
-	
+
 	 示例1:<action application="set" data="MY_VAR=${lua(helloworld.lua arv1 arg2)}"/>
 	 示例2：<action application="set" data="MY_VAR=${lua(helloworld.lua $1)}" />
 	 示例3: <action application="set" data="MY_VAR=${lua(helloworld.lua $1 ${caller_id_number})}" />
 	 示例4: <action application="set" data="MY_VAR=${lua(helloworld.lua ${caller_id_number})}" inline="true" />
 
- 	 示例5: <condition field="${lua(helloworld.lua arv1 arg2)}" expression="^Hello World$" >	
+ 	 示例5: <condition field="${lua(helloworld.lua arv1 arg2)}" expression="^Hello World$" >
 
 ## IVR示例 ##
 
@@ -256,21 +261,21 @@ FreeSWITH是从静态XML文件中请求并加载配置文件数据，而Lua模�
 
 	-- 接听来电
 	session:answer();
-	
+
 	-- 休眠1秒
 	session:sleep(1000);
-	
+
 	-- 播放语音提示文件
 	session:streamFile("/path/to/blah.wav");
-	
+
 	-- 挂机
 	session:hangup();
 
 ## 模式匹配（正则表达式） ##
 
 ### API函数regex示例 ###
-通过这种方式，你可以在lua脚本内执行正则表达式条件（感谢 bkw_）。  
-  
+通过这种方式，你可以在lua脚本内执行正则表达式条件（感谢 bkw_）。
+
 	session:execute("set", "some_chan_variable=${regex(" .. destination .. "|^([0-9]{10})$)}")
 
 如果destination是一个lua变量，用于存储你拨打的目标号码，同时你的正则表达式是^([0-9]{10})$
@@ -284,19 +289,19 @@ FreeSWITH是从静态XML文件中请求并加载配置文件数据，而Lua模�
 
 
 ### Lua自带的模式匹配 ###
-Lua支持一种简单但同样强大的模式匹配语法。虽然没有PCRE强大，但是却能处理脚本中绝大部分模式匹配问题。   
+Lua支持一种简单但同样强大的模式匹配语法。虽然没有PCRE强大，但是却能处理脚本中绝大部分模式匹配问题。
 下面是一个简单脚本，可以通过fs_cli中的luarun运行，主要用来展示字符串捕获：
 
 	-- pattern.lua
 	data = "1234#5678";
 	_,_,var1,var2 = string.find(data,"(%d+)#(%d+)");
 	freeswitch.consoleLog("INFO","\ndata: " .. data .. "\nvar1: " .. var1 .. "\nvar2: " .. var2 .. "\n");
-	
+
 	Output:
 	freeswitch@internal> luarun pattern.lua
 	+OK
-	
-	2011-04-18 08:28:49.242080 [INFO] switch_cpp.cpp:1197 
+
+	2011-04-18 08:28:49.242080 [INFO] switch_cpp.cpp:1197
 	data: 1234#5678
 	var1: 1234
 	var2: 5678
@@ -309,7 +314,7 @@ Lua支持一种简单但同样强大的模式匹配语法。虽然没有PCRE强�
 ## 杂项 ##
 
 ### 运行Shell命令 ###
-当使用session:execute()和api:execute()去执行shell命令（如Bash脚本）的时候，会只返回整型的错误码。   
+当使用session:execute()和api:execute()去执行shell命令（如Bash脚本）的时候，会只返回整型的错误码。
 如果需要获取shell命令的返回值，可以使用io.popen()方法。下面的例子来自http://lua-users.org/wiki/ShellAccess.
 
 	  function shell(c)
@@ -321,27 +326,27 @@ Lua支持一种简单但同样强大的模式匹配语法。虽然没有PCRE强�
 	  end
 
 ## 更多示例 ##
-* See scripts/lua directory on the file system    
-* [[IVR|Example IVRs]] 
+* See scripts/lua directory on the file system
+* [[IVR|Example IVRs]]
 * [[Lua MythTV alert example]]
-* [[Fakecall responder]] 
+* [[Fakecall responder]]
 * [[Fun Lua Examples]]
 * [[Call retry based on hangup cause]]
 * [[Bridging two calls with retry]]
 
 ## FAQ ##
 ### 我的调试信息在哪里 ###
-Q:当我使用静态XML或xml\_curl（去执行命令）时，能通过fs_cli和xml\_cdr文件的“application log”节点看到执行的命令日志。但是，当我通过lua脚本去执行命令的时候，去怎么也看不到这些信息。 
+Q:当我使用静态XML或xml\_curl（去执行命令）时，能通过fs_cli和xml\_cdr文件的“application log”节点看到执行的命令日志。但是，当我通过lua脚本去执行命令的时候，去怎么也看不到这些信息。
 
-A: 在lua脚本中，当你有一个真实可用的呼叫会话时（译者注：比如从拨号方案中转入lua脚本时，可以使用session对象来操作此次呼叫），可以使用session:execute("$application","$data")命令，使用该方法会在fs_cli和xml\_cdr的日志中显示出命令执行情况。    
+A: 在lua脚本中，当你有一个真实可用的呼叫会话时（译者注：比如从拨号方案中转入lua脚本时，可以使用session对象来操作此次呼叫），可以使用session:execute("$application","$data")命令，使用该方法会在fs_cli和xml\_cdr的日志中显示出命令执行情况。
 但如果没有呼叫会话，比如你的lua脚本是在后台运行或从cli启动的，那你只能使用其他不能记录日志的命令。
 
 ### 如何使用第三方的lua脚本或模块? ###
 
-Q: 我需要把自己的lua文件放到什么地方，以便让FreeSWITCH能读取到。    
+Q: 我需要把自己的lua文件放到什么地方，以便让FreeSWITCH能读取到。
 我正在运行一个/scripts目录下面的lua脚本，但是它需要包含另一个lua文件。
 
-A: 答案是/usr/local/share/lua/5.1/    
+A: 答案是/usr/local/share/lua/5.1/
 或者，你可以安装系统lua环境（通过apt-get或yum），freeswitch内嵌的lua会到插件目录中去查找库文件。
 
 （下面的英文暂不翻译，没开发好，翻译有个毛用！）
@@ -371,7 +376,7 @@ Q : 能对FreeSWITCH使用luarocks吗?
 A : 可以，luarocks是lua的包库管理器。它可以将库安装到系统目录中，然后你就可以通过FreeSWITCH中的lua来引用它们。为了能正常安装luarocks，你同样需要在系统中安装lua环境。
 
 举例来说，如果你想在Ubuntu 12.04上面使用LuaXML库，则需要如下操作：
-    
+
 	sudo apt-get install lua-5.1 luarocks
 	luarocks install luaxml
 
@@ -398,35 +403,35 @@ A: 你可以通过修改环境变量LUA_PATH，以便告诉FreeSWITCH的内置Lu
 	 ulimit -s 240
 	 screen /usr/local/freeswitch/bin/freeswitch
 
-默认的路径为/usr/local/share/lua/5.1/，需要根据情况修改。    
+默认的路径为/usr/local/share/lua/5.1/，需要根据情况修改。
 
-还有一种方式，是使用‘dofile’命令，如下：   
-eg. dofile("/home/fred/scripts/fredLuaFunctions.lua")    
+还有一种方式，是使用‘dofile’命令，如下：
+eg. dofile("/home/fred/scripts/fredLuaFunctions.lua")
 
 注：dofile只是把文件中包含的命令，当做一条命令来执行，和创建lua模块不一样。
 
 ### 能通过ODBC访问数据库不? ###
 可以。有两种方式来访问，分别是自带的freeswitch.Dbh和luaSQL模块。这里主要介绍第二种方法。
 
-通过LuaSQL，你不仅可以访问ODBC数据源，还可以访问PostgreSQL, Oracle和MySQL。LuaSQL自己实现了对这些数据库的连接。     
+通过LuaSQL，你不仅可以访问ODBC数据源，还可以访问PostgreSQL, Oracle和MySQL。LuaSQL自己实现了对这些数据库的连接。
 想了解更多的话，查看http://www.keplerproject.org/luasql/
 
-下面是安装LuaSQL的简短说明。  
+下面是安装LuaSQL的简短说明。
 提醒下，在X64_86平台上面，配置文件要稍作更改。
 
 	http://luaforge.net/frs/download.php/2686/luasql-2.1.1.tar.gz
 	tar xfvz luasql-2.1.1.tar.gz
 	cd luasql-2.1.1/
 
-配置文件分成三个部分：   
-1、数据库名称   
-2、指向不同库的路径设置      
-3、执行数据库相关库的路径设置     
+配置文件分成三个部分：
+1、数据库名称
+2、指向不同库的路径设置
+3、执行数据库相关库的路径设置
 
-第一步，根据操作系统类型，调整路径的设置方式     
+第一步，根据操作系统类型，调整路径的设置方式
 第二步，选择一种数据库驱动进行编译（每次只能编译一个驱动）。如编译MySQL，需要取消配置文件#1和#3中关于MySQL的注释，其他配置行需要注释掉。
 
-注：在RHEL/CentOS中，LuaSQL默认的指向MySQL的libs和include的路径，不是真实路径，需要做如下调整：   
+注：在RHEL/CentOS中，LuaSQL默认的指向MySQL的libs和include的路径，不是真实路径，需要做如下调整：
 
 	DRIVER_LIBS= -L/usr/lib/mysql -lmysqlclient -lz
 	DRIVER_INCS= -I/usr/include/mysql
@@ -435,7 +440,7 @@ eg. dofile("/home/fred/scripts/fredLuaFunctions.lua")
 
 	sed -i 's/#T= odbc/T= odbc/g' config
 	sed -i 's/T=sqlite3/#T=sqlite3/g' config
-	
+
 	DRIVER_LIBS= -L/usr/lib64 -lodbc
 	DRIVER_INCS= -DUNIXODBC -I/usr/include
 
@@ -443,7 +448,7 @@ eg. dofile("/home/fred/scripts/fredLuaFunctions.lua")
 
 为了编译顺利，修改如下：
 
-	sed -i 's/WARN= /WARN= -fPIC /g' config 
+	sed -i 's/WARN= /WARN= -fPIC /g' config
 
 
 编译...
@@ -455,14 +460,14 @@ eg. dofile("/home/fred/scripts/fredLuaFunctions.lua")
 
 	#!/usr/local/bin/lua
 	require "luasql.mysql"
-	
+
 	env = assert (luasql.mysql())
 	con = assert (env:connect("database","username","password","localhost"))
 	cur = assert (con:execute"SELECT * FROM table")
 	row = cur:fetch ({}, "a")
-	
+
 	session:setVariable("varname", tostring(row.column));
-	
+
 	cur:close()
 	con:close()
 	env:close()
@@ -479,9 +484,9 @@ eg. dofile("/home/fred/scripts/fredLuaFunctions.lua")
 	Driver          = /usr/lib/libmyodbc.so
 	Setup           = /usr/lib/libodbcmyS.so
 	FileUsage       = 1
-	
+
 注：需要确保lib目录中有libmyodbc.so和libodbcmyS.so文件
-	
+
 	File: odbc.ini
 	[mydsn]
 	Driver     = MySQL
@@ -512,21 +517,21 @@ http://fisheye.freeswitch.org:8081/changelog/FreeSWITCH?cs=9605
 	--   It just prints a list of all functions.  We may be able to find functions
 	--   that have not yet been documented but are useful.  I did :)
 	function printSessionFunctions( session )
-	
+
 	   metatbl = getmetatable(session)
 	   if not metatbl then return nil end
-	
+
 	   local f=metatbl['.fn'] -- gets the functions table
 	   if not f then return nil end
-	
+
 	   print("\n***Session Functions***\n")
 	   for k,v in pairs(f) do print(k,v) end
 	   print("\n\n")
-	
+
 	end
-	
+
 	new_session = freeswitch.Session() -- create a blank session
-	
+
 	printSessionFunctions(new_session)
 
 
@@ -583,21 +588,21 @@ http://fisheye.freeswitch.org:8081/changelog/FreeSWITCH?cs=9605
 
 ### 如何测试文件是否存在? ###
 
-在Lua中,你可以使用API命令中的file_exists来判断文件是否存在。     
+在Lua中,你可以使用API命令中的file_exists来判断文件是否存在。
 
-下面的例子用来检查hello.wav文件是否存在于/usr/local/freeswitch/sounds/messages目录中。    
-如果存在，使用playback函数向主叫播放该语音文件。    
-如果不存在，则播放goodbye.wav文件。   
+下面的例子用来检查hello.wav文件是否存在于/usr/local/freeswitch/sounds/messages目录中。
+如果存在，使用playback函数向主叫播放该语音文件。
+如果不存在，则播放goodbye.wav文件。
 
 	 local message_location = "/usr/local/freeswitch/sounds/messages/"
 	 local message = "hello.wav"
-	 
+
 	 message = message_location .. message
 	 session:consoleLog("debug", "file_exists: Check for message1: ".. message .."\n")
-	 
+
 	 api = freeswitch.API(); -- create API-session
 	 reply = api:executeString("file_exists " .. message); -- execute file_exists with message and return result in reply
-	 
+
 	 if reply ## "true" then
 	     session:consoleLog("info", "file_exists: Initial file found. Playing " .. message"\n")
 	 else
@@ -615,14 +620,14 @@ http://fisheye.freeswitch.org:8081/changelog/FreeSWITCH?cs=9605
 ####event:addBody####
 
 	--Create Custom event
-					
-	custom_msg = 	"dial_record_id: " .. dial_record_id .. "\n" .. 
+
+	custom_msg = 	"dial_record_id: " .. dial_record_id .. "\n" ..
 			"call_disposition: " .. Disposition .. "\n" ..
 			"campaign_number: "  .. Campaign .. "\n" ..
-			"called_number: "    .. dial_num .."\n"  ;  
+			"called_number: "    .. dial_num .."\n"  ;
 			local e = freeswitch.Event("custom", "dial::dial-result");
-	
-	
+
+
 	e:addBody(custom_msg);
 	e:fire();
 
@@ -654,9 +659,9 @@ http://fisheye.freeswitch.org:8081/changelog/FreeSWITCH?cs=9605
 	                    [campaign_number] => 20
 	                    [called_number] => 7777777
 	                )
-	
+
 	        )
-	
+
 	)
 
 
@@ -698,12 +703,12 @@ bkw童鞋提供了下面的例子：
 	-- Print as text
 	io.write(params:serialize());
 	io.write(params:serialize("text"));
-	
+
 	-- Print as JSON
 	io.write(params:serialize("json"));
-	
+
 或者，作为info日志信息输出，
-	
+
 	freeswitch.consoleLog("info",params:serialize())
 
 
@@ -712,10 +717,10 @@ bkw童鞋提供了下面的例子：
 ####Sending an Event####
 使用luarun执行下面的命令，以用来控制注册话机MWI灯的开启和关闭。
 
-	local event = freeswitch.Event("message_waiting");                                                                                                              
-	event:addHeader("MWI-Messages-Waiting", "no");                                                                                                                 
-	event:addHeader("MWI-Message-Account", "sip:1002@10.0.1.100");                                                                                                 
-	event:fire();  
+	local event = freeswitch.Event("message_waiting");
+	event:addHeader("MWI-Messages-Waiting", "no");
+	event:addHeader("MWI-Message-Account", "sip:1002@10.0.1.100");
+	event:fire();
 
 
 ### Sessions ###
@@ -752,11 +757,11 @@ bkw童鞋提供了下面的例子：
 	session:consoleLog("err",    "lua rocks\n");
 	session:consoleLog("debug",  "lua rocks\n");
 	session:consoleLog("warning","lua rocks\n");
-	
+
 ####session:destroy####
 
-该函数用于销毁会话，释放资源。   
-当你的脚本执行结束的时候，该方法会被自动调用。      
+该函数用于销毁会话，释放资源。
+当你的脚本执行结束的时候，该方法会被自动调用。
 但是如果你的脚本中包含一个死循环，则需要使用该函数来停止会话。
 
 ####session:execute####
@@ -764,7 +769,7 @@ bkw童鞋提供了下面的例子：
 session:execute(app, data)
 
 	local mySound = "/usr/local/freeswitch/sounds/music/16000/partita-no-3-in-e-major-bwv-1006-1-preludio.wav"
-	
+
 	session:execute("playback", mySound)
 
 注：在execute命令执行过程中，不能执行回调函数（如DTMF监听等各种小伙伴）
@@ -773,7 +778,7 @@ session:execute(app, data)
 等同于session:execute(api_string)
 
 	local mySound = "/usr/local/freeswitch/sounds/music/16000/partita-no-3-in-e-major-bwv-1006-1-preludio.wav"
-	
+
 	session:executeString("playback "..mySound)
 
 注：在execute命令执行过程中，不能执行回调函数（如DTMF监听等各种小伙伴）
@@ -811,7 +816,7 @@ session:execute(app, data)
 		local moh = session:getVariable("hold_music")
 		--[[ events obtained from "switch_channel.c"
 		 regards Monroy from Mexico
-		]]	
+		]]
 	    session:getVariable("context");
 		session:getVariable("destination_number");
 		session:getVariable("caller_id_name");
@@ -843,20 +848,20 @@ session:execute(app, data)
 具体挂机原因详见[[Hangup causes]].
 
 	-- Initiate an outbound call
-	
+
 	obSession = freeswitch.Session("sofia/192.168.0.4/1002")
-	
+
 	-- Check to see if the call was answered
-	
+
 	if obSession:ready() then
 	    -- Do something good here
-	
+
 	else    -- This means the call was not answered ... Check for the reason
-	
+
 	    local obCause = obSession:hangupCause()
-	
+
 	    freeswitch.consoleLog("info", "obSession:hangupCause() = " .. obCause )
-	
+
 	    if ( obCause == "USER_BUSY" ) then              -- SIP 486
 	       -- For BUSY you may reschedule the call for later
 	    elseif ( obCause == "NO_ANSWER" ) then
@@ -1001,8 +1006,8 @@ session:preAnswer();
 Play a file and get digits.
 
 <pre>
-digits = session:read(5, 10, "/sr8k.wav", 3000, "#");                                                                                                           
-session:consoleLog("info", "Got dtmf: ".. digits .."\n");         
+digits = session:read(5, 10, "/sr8k.wav", 3000, "#");
+session:consoleLog("info", "Got dtmf: ".. digits .."\n");
 </pre>
 
 session:read has 5 arguments: <min digits> <max digits> <file to play> <inter-digit timeout> <terminators>
@@ -1014,9 +1019,9 @@ session:read has 5 arguments: <min digits> <max digits> <file to play> <inter-di
 See [[#session:hangupCause]] for more detail on if NOT ready.
 
 <pre>
-while (session:ready() ## true) do                                                                                                                              
-   -- do something here                                                                                                                                              
-end 
+while (session:ready() ## true) do
+   -- do something here
+end
 </pre>
 
 ####session:recordFile####
@@ -1135,30 +1140,30 @@ s:destroy("error message");
 
 ####session:setInputCallback####
 <pre>
-function my_cb(s, type, obj, arg)                                                                                                                                  
-                                                                                                                                                                
-   if (arg) then                                                                                                                                                
-      io.write("type: " .. type .. "\n" .. "arg: " .. arg .. "\n");                                                                                             
-   else                                                                                                                                                         
-      io.write("type: " .. type .. "\n");                                                                                                                       
-   end                                                                                                                                                          
-                                                                                                                                                                
-   if (type ## "dtmf") then                                                                                                                                     
-      io.write("digit: [" .. obj['digit'] .. "]\nduration: [" .. obj['duration'] .. "]\n");                                                                     
-   else                                                                                                                                                         
-      io.write(obj:serialize("xml"));                                                                                                                           
-                                                                                                                                                                
-      e = freeswitch.Event("message");                                                                                                                          
-      e:add_body("you said " .. obj:get_body());                                                                                                                
-      session:sendEvent(e);                                                                                                                                     
-   end                                                                                                                                                          
-end                                                                                                                                                             
+function my_cb(s, type, obj, arg)
 
-blah="w00t";                                                                                                                                                                
-                                                                                                                                                                
-session:answer();                                                                                                                                               
-session:setInputCallback("my_cb", "blah");                                                                                                                      
-session:streamFile("/tmp/swimp.raw");          
+   if (arg) then
+      io.write("type: " .. type .. "\n" .. "arg: " .. arg .. "\n");
+   else
+      io.write("type: " .. type .. "\n");
+   end
+
+   if (type ## "dtmf") then
+      io.write("digit: [" .. obj['digit'] .. "]\nduration: [" .. obj['duration'] .. "]\n");
+   else
+      io.write(obj:serialize("xml"));
+
+      e = freeswitch.Event("message");
+      e:add_body("you said " .. obj:get_body());
+      session:sendEvent(e);
+   end
+end
+
+blah="w00t";
+
+session:answer();
+session:setInputCallback("my_cb", "blah");
+session:streamFile("/tmp/swimp.raw");
 </pre>
 
 When used outside of streaming a file to a channel the return values "true" or "undefined" are accepted as true(which continues the audio stream I believe), anything else will be evaluated as false(which would stop the stream).
@@ -1174,7 +1179,7 @@ session:setVariable("varname", "varval");
 
 ####session:sleep####
 <pre>
-session:sleep(3000); 
+session:sleep(3000);
 </pre>
 
 * '''This will allow callbacks to DTMF to occur''' and session:execute("sleep", "5000"), won't.
@@ -1230,7 +1235,7 @@ session:unsetInputCallback()
 ####session:waitForAnswer####
 
 ### Non-Session API ###
-These methods are generic in that they do not apply to a session or an event. For example, printing data to the FreeSWITCH console is neither event- nor session-specific. 
+These methods are generic in that they do not apply to a session or an event. For example, printing data to the FreeSWITCH console is neither event- nor session-specific.
 ####freeswitch.API####
 <pre>
 api = freeswitch.API();
@@ -1277,7 +1282,7 @@ local dbh = freeswitch.Dbh("core:my_db") -- when using sqlite (deprecated, if yo
 -- OR --
 local dbh = freeswitch.Dbh("sqlite://my_db") -- sqlite database in subdirectory "db"
 -- OR --
-local dbh = freeswitch.Dbh("odbc://my_db:uname:passwd") -- connect to ODBC database 
+local dbh = freeswitch.Dbh("odbc://my_db:uname:passwd") -- connect to ODBC database
 
 assert(dbh:connected()) -- exits the script if we didn't connect properly
 
@@ -1352,7 +1357,7 @@ mp3enc message.wav message.mp3
 This is firing a custom event my::event.
 
 <pre>
-local event = freeswitch.Event("custom", "my::event"); 
+local event = freeswitch.Event("custom", "my::event");
 event:addHeader("My-Header", "test");
 event:fire();
 --Another one
@@ -1373,26 +1378,26 @@ Consumes events from FreeSWITCH.
 
 Usage:
  con = freeswitch.EventConsumer("<event_name>"[,"<subclass type>"]);
- 
+
  -- pop() returns an event or nil if no events
  con:pop()
- 
+
  -- pop(1) blocks until there is an event
  con:pop(1)
- 
+
  -- pop(1,500) blocks for max half a second until there is an event
  con:pop(1,500)
 
 Examples:
 <pre>
-con = freeswitch.EventConsumer("all"); 
-session = freeswitch.Session("sofia/default/dest@host.com");                                                                                                                                                                                                                                                                    
-while session:ready() do                                                                                                                                        
-   session:execute("sleep", "1000");                                                                                                                            
-   for e in (function() return con:pop() end) do                                                                                                                
-      print("event\n" .. e:serialize("xml"));                                                                                                                      
-   end                                                                                                                                                          
-end 
+con = freeswitch.EventConsumer("all");
+session = freeswitch.Session("sofia/default/dest@host.com");
+while session:ready() do
+   session:execute("sleep", "1000");
+   for e in (function() return con:pop() end) do
+      print("event\n" .. e:serialize("xml"));
+   end
+end
 
 -- or
 while session:ready() do
@@ -1422,8 +1427,8 @@ function poll()
     end
     print("no reply")
     return false
-end 
-  
+end
+
 </pre>
 
 ####freeswitch.getGlobalVariable####
@@ -1434,38 +1439,38 @@ my_globalvar = freeswitch.getGlobalVariable("varname")
 </pre>
 ####freeswitch.IVRMenu####
 <pre>
-hash = {                                                                                                                                                        
-   ["main"] = undef,                                                                                                                                            
-   ["name"] = "top",                                                                                                                                            
-   ["greet_long"] = "phrase:demo_ivr_main_menu",                                                                                                                
-   ["greet_short"] = "phrase:demo_ivr_main_menu_short",                                                                                                            
-   ["invalid_sound"] = "ivr/ivr-that_was_an_invalid_entry.wav",                                                                                                                          
-   ["exit_sound"] = "voicemail/vm-goodbye.wav",                                                                                                                 
-   ["confirm_macro"] = "undef",                                                                                                                                 
-   ["confirm_key"] = "undef",                                                                                                                                   
-   ["confirm_attempts"] = "3",                                                                                                                                  
-   ["inter_digit_timeout"] = "2000",                                                                                                                            
-   ["digit_len"] = "1",                                                                                                                                         
-   ["timeout"] = "10000",                                                                                                                                       
-   ["max_failures"] = "3"                                                                                                                                       
-}                                                                                                                                                               
-                                                                                                                                                                
-top = freeswitch.IVRMenu(hash["main"],                                                                                                                          
-                         hash["name"],                                                                                                                          
-                         hash["greet_long"],                                                                                                                    
-                         hash["greet_short"],                                                                                                                   
-                         hash["invalid_sound"],                                                                                                                 
-                         hash["exit_sound"],                                                                                                                    
-                         hash["confirm_macro"],                                                                                                                 
-                         hash["confirm_key"],                                                                                                                   
-                         hash["confirm_attempts"],                                                                                                              
-                         hash["inter_digit_timeout"],                                                                                                           
-                         hash["digit_len"],                                                                                                                     
-                         hash["timeout"],                                                                                                                       
-                         hash["max_failures"]);                                                                                                                 
-                                                                                                                                                                
-top:bindAction("menu-exec-app", "playback /tmp/swimp.raw", "2");                                                                                                
-top:execute(session, "top");                          
+hash = {
+   ["main"] = undef,
+   ["name"] = "top",
+   ["greet_long"] = "phrase:demo_ivr_main_menu",
+   ["greet_short"] = "phrase:demo_ivr_main_menu_short",
+   ["invalid_sound"] = "ivr/ivr-that_was_an_invalid_entry.wav",
+   ["exit_sound"] = "voicemail/vm-goodbye.wav",
+   ["confirm_macro"] = "undef",
+   ["confirm_key"] = "undef",
+   ["confirm_attempts"] = "3",
+   ["inter_digit_timeout"] = "2000",
+   ["digit_len"] = "1",
+   ["timeout"] = "10000",
+   ["max_failures"] = "3"
+}
+
+top = freeswitch.IVRMenu(hash["main"],
+                         hash["name"],
+                         hash["greet_long"],
+                         hash["greet_short"],
+                         hash["invalid_sound"],
+                         hash["exit_sound"],
+                         hash["confirm_macro"],
+                         hash["confirm_key"],
+                         hash["confirm_attempts"],
+                         hash["inter_digit_timeout"],
+                         hash["digit_len"],
+                         hash["timeout"],
+                         hash["max_failures"]);
+
+top:bindAction("menu-exec-app", "playback /tmp/swimp.raw", "2");
+top:execute(session, "top");
 
 </pre>
 
@@ -1497,7 +1502,7 @@ Create a new session.
 
 <pre>
 local session = freeswitch.Session("sofia/10.0.1.100/1001");
-session:transfer("3000", "XML", "default"); 
+session:transfer("3000", "XML", "default");
 </pre>
 
 Create a new session with execute_on_answer variable set.
@@ -1524,7 +1529,7 @@ Would set the channel variable "foo" to "hello world".
 <pre>
 --
 -- lua/api.lua
--- 
+--
 -- enable mod_xml_rpc and try http://127.0.0.1:8080/api/lua?lua/api.lua in your webbrowser
 --
 stream:write("Content-Type: text/html\n\n");
@@ -1555,19 +1560,19 @@ stream:write(env:serialize() .. "\n\n");
  -- call control lua script
  --
   dialA = "sofia/gateway/fs1/9903"
-  dialB = "user/1001"                               
-  legA = freeswitch.Session(dialA)                                                     
-  dispoA = "None"       
- while(legA:ready() and dispoA ~= "ANSWER") do                 
-  dispoA = legA:getVariable("endpoint_disposition")                                                 
+  dialB = "user/1001"
+  legA = freeswitch.Session(dialA)
+  dispoA = "None"
+ while(legA:ready() and dispoA ~= "ANSWER") do
+  dispoA = legA:getVariable("endpoint_disposition")
   freeswitch.consoleLog("INFO","Leg A disposition is '" .. dispoA .. "'\n")
   os.execute("sleep 1")
  end -- legA while
- if( not legA:ready() ) then 
-  -- oops, lost leg A handle this case 
+ if( not legA:ready() ) then
+  -- oops, lost leg A handle this case
   freeswitch.consoleLog("NOTICE","It appears that " .. dialA .. " disconnected...\n")
- else 
-  legB = freeswitch.Session(dialB) 
+ else
+  legB = freeswitch.Session(dialB)
   dispoB = "None"
   while(legA:ready() and legB:ready() and dispoB ~= "ANSWER") do
     if ( not legA:ready() ) then
@@ -1578,7 +1583,7 @@ stream:write(env:serialize() .. "\n\n");
       dispoB = legB:getVariable("endpoint_disposition")
       freeswitch.consoleLog("NOTICE","Leg B disposition is '" .. dispoB .. "'\n")
     end -- inner if legA ready
-  end -- legB while   
+  end -- legB while
   if ( legA:ready() and legB:ready() ) then
     freeswitch.bridge(legA,legB)
   else
@@ -1588,31 +1593,31 @@ stream:write(env:serialize() .. "\n\n");
  end -- outter if legA ready
 
 ####Special Case: env object####
-When lua is called as the hangup hook there will be a special '''env''' object that contains all the channel variables from the channel that just disconnected. 
+When lua is called as the hangup hook there will be a special '''env''' object that contains all the channel variables from the channel that just disconnected.
 
 Add an extension to test this feature:
   <extension name="lua-env-hangup-hook-test">
     <condition field="destination_number" expression="^(1234)$">
       <action application="answer"/>
       <action application="set" data="api_hangup_hook=lua hook-test.lua"/>
-      <action application="set" data="my_custom_var=foobar"/> 
+      <action application="set" data="my_custom_var=foobar"/>
       <action application="sleep" data="10000"/>
-      <action application="hangup"/>                   
-    </condition>                             
+      <action application="hangup"/>
+    </condition>
   </extension>
 
 Then add freeswitch/scripts/hook-test.lua:
 <pre>
--- hook-test.lua                 
+-- hook-test.lua
 -- demonstrates using env to look at channel variables in hangup hook script
 
 -- See everything
-dat = env:serialize()            
+dat = env:serialize()
 freeswitch.consoleLog("INFO","Here's everything:\n" .. dat .. "\n")
 
 -- Grab a specific channel variable
-dat = env:getHeader("uuid")      
-freeswitch.consoleLog("INFO","Inside hangup hook, uuid is: " .. dat .. "\n")                            
+dat = env:getHeader("uuid")
+freeswitch.consoleLog("INFO","Inside hangup hook, uuid is: " .. dat .. "\n")
 
 -- Drop some info into a log file...
 res = os.execute("echo " .. dat .. " >> /tmp/fax.log")
