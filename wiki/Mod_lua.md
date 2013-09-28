@@ -1,3 +1,8 @@
+---
+title: Lua
+layout: default
+---
+
 目录：   
 <pre>
 * 1 <a href="#jump1">Lua特性</a>  
