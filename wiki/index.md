@@ -10,3 +10,4 @@ title: Wiki
 * [Mod_dptools](/wiki/mod_dptools.html)
 * [Channel_Variables](/wiki/Channel_Variables.html) 
 * [Mod_Lua](/wiki/Mod_lua.html)
+* [Mod_Commands](/wiki/Mod_Commands.html)
