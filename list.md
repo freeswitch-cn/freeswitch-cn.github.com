@@ -8,7 +8,8 @@ title: 翻译页面列表
 * Seven: XX
 * xiaoguang: XX
 * llcxyz: Channel Variables
-* jizhask(moyan): Mod Lua
+* moyan: Mod Commands
+
 
 # 正在校对的文档
 
@@ -25,3 +26,4 @@ title: 翻译页面列表
 
 * Seven: ZZ
 * xiaoguang: ZZ
+* jizhask(moyan): Mod Lua
