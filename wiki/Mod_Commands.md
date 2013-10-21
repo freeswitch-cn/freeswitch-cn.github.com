@@ -3,14 +3,14 @@ title: Commands
 layout: default
 ---
 
-##Introduction##
+##简介##
 下面的是根据最新的版本r14778（九月九号）中mod_commands模块提供的命令，这些命令可以使用方式有很多种，如下：
 
 ### 控制台 ###
 具体查看下面内容。
 译者注：通过FreeSWITCH控制台使用
 
-### API/Event Interfaces ###
+### API/事件 接口 ###
 通过API或事件接口调用，如：   
 
 * [[mod\_event\_socket]]
@@ -18,7 +18,7 @@ layout: default
 * [[mod\_erlang_event]]
 * [[mod\_xml_rpc]]
 
-### Scripting Interfaces ###
+### 脚本接口 ###
 通过脚本进行调用，如下：
 
 * [[mod_perl]]
@@ -26,7 +26,7 @@ layout: default
 * [[mod_python]]
 * [[mod_lua]]
 
-### From the [[Dialplan]] ###
+### 拨号方案调用 ###
 通过拨号方案进行调用，例子如下：
 
 	<source lang="xml">
@@ -209,15 +209,15 @@ FreeSWITCH不信任系统时间。当系统第一次启动的时候，从系统�
 查询显示目前生效的sessions-per-second属性。
 
 ####pause####
-
-inbound or outbound may optionally be specified to pause just inbound or outbound session creation, both paused if nothing specified. resume has similar behavior.
+可以使用参数inbound或outbound来暂停创建呼入或呼出通话，如果没有指定参数的话，则呼入呼出都暂停。resume的用法类似。
 
 ####min\_dtmf\_duration####
 
-Example:
+例子:
 
- fsctl min_dtmf_duration 800
+    fsctl min_dtmf_duration 800
 
+译者注：没看懂，就不翻译出来误导人了！    
 This example sets the min_dtmf_duration switch parameter to 100ms. The number is in clock ticks where clockticks / 8 = ms. The min_dtmf_duration specifies the minimum DTMF duration to use on outgoing events. Events shorter than this will be increased in duration to match min_dtmf_duration. You cannot configure a DTMF duration on a profile that is less than this setting. You may increase this value, but cannot set it lower than 400 (the default). This value cannot exceed max_dtmf_duration. This setting can be changed in switch.conf.xml.
 
 It is worth noting that many devices squelch in-band DTMF when sending RFC 2833. Devices that squelch in-band DTMF have a certain reaction time and clamping time which can sometimes reach as high as 40ms, though most can do it in less than 20ms. As the shortness of your DTMF event duration approaches this clamping threshold, the risk of your DTMF being ignored as a squelched event increases. If your call is always IP-IP the entire route, this is likely not a concern. However, when your call is sent to the PSTN, the RFC 2833 must be encoded in the audio stream. This means that other devices down the line (possibly a PBX or IVR you are calling into) might start considering your DTMF event a squelched tone and ignore it entirely. For this reason, it is recommended that you do not send DTMF events shorter than 80ms.
@@ -277,178 +277,176 @@ Enables verbose events. Verbose events have '''every''' channel variable in '''e
     global_setvar foo=bar
 
 ###group_call###
-Returns the bridge string defined in a [[XML User Directory Guide#Groups|call group]].
+返回组呼bridge字符串，组呼定义请参考[[XML User Directory Guide#Groups|call group]]。
 
-<pre>
- Usage: group_call group@domain[+F][+A][+E]
-</pre>
+ 	Usage: group_call group@domain[+F][+A][+E]
 
-+F will return the group members in a serial fashion (separated by |), +A will return them in a parallel fashion (separated by ,) and +E will return them in a [[Freeswitch_IVR_Originate#Enterprise_originate|enterprise fashion]] (separated by :_:). See [[XML User Directory Guide#Groups|Groups]] in the XML User Directory for more information.
++F将会以串行呼叫模式返回组成员（以“|”隔开各成员）.
++A将会以并行呼叫模式返回组成员（以“，”隔开各成员）.
++E将会议呼叫模式返回组成员（以：\_:隔开各成员），关于企业呼叫请参考[[Freeswitch\_IVR\_Originate#Enterprise\_originate|enterprise fashion]].
 
+请注意：如果你需要设置在外呼通道上面设置用户变量，需要确保你的domain或被拨打组的变量列表里面没有设置dial-string和group-dial-string，用设置用户默认组里面的dial-string和group-dial-string来替代。这样的话，group_call将会返回user/101,user/将会设置你的外呼通道变量。
 Please note: If you need to have outgoing user variables set in outgoing channel, make sure you don't have dial-string and group-dial-string in your domain or dialed group variables list, instead set dial-string or group-dial-string in default group of the user. This way group_call will return user/101 and user/ would set all your user variables to outgoing channel ...
 
 ###help###
-Show help for all the API commands.
+显示所有API命令的帮助信息。
 
- Usage: help
+    用法: help
 
 ###host_lookup###
 
-Performs a host lookup on a domain name.
+针对指定域名做主机查询(host lookup)。
 
- Usage: host_lookup <hostname>
+    用法: host_lookup <hostname>
 
 ###hupall###
+断开现存通话。
 
-Disconnect existing channels.
+    用法: hupall <cause> [<variable> <value>]
 
- Usage: hupall <cause> [<variable> <value>]
+挂断所有含有变量<variable>，并且值为<value>的通话，挂机原因为<cause>。
 
-All channels that have <var> set to <value> will be disconnected with <cause>
+例子:
 
-Example:
-
-originate {foo=bar}sofia/internal/someone1@server.com,sofia/internal/someone2@server.com &park
-
-hupall normal_clearing foo bar
+	originate {foo=bar}sofia/internal/someone1@server.com,sofia/internal/someone2@server.com &park
+	
+	hupall normal_clearing foo bar
 
 ###in_group###
+判断用户是否在指定的组中
 
-Determine if a user is in a group.
-
- Usage: in_group <user>[@<domain>] <group_name>
+    用法: in_group <user>[@<domain>] <group_name>
 
 ###is_lan_addr###
+判断IP是否为内网地址
 
-See if an IP is a LAN address.
-
- Usage: is_lan_addr <ip>
+    用法: is_lan_addr <ip>
 
 ###load###
-Load external module
+加载外部模块
 
- Usage: load <mod_name>
+    用法: load <mod_name>
 
 ###md5###
-Return MD5 hash for the given input data
+返回指定数据的MD5值。
 
- Usage: md5 <data>
+    用法: md5 <data>
 
 ###module_exists###
+检查模块是否存在。
 
-Check if module exists.
-
- Usage: module_exists <module>
+    用法: module_exists <module>
 
 ###msleep###
-Sleep for x number of milliseconds
+休眠指定毫秒
 
- Usage: msleep <number of milliseconds to sleep>
+    用法: msleep <休眠的毫秒数>
 
 
 ###nat_map###
 
- Usage: nat_map [status|reinit|republish] | [add|del] <port> [tcp|udp] [sticky] | [mapping] <enable|disable>
+    用法: nat_map [status|reinit|republish] | [add|del] <port> [tcp|udp] [sticky] | [mapping] <enable|disable>
 
-* status - Gives the NAT type, the external IP, and the currently mapped ports.
-* reinit - Completely re-initializes the NAT engine.  Use this if you have changed swapped out your router or have changed your router from NAT mode to UPnP mode.
-* republish - Causes FreeSWITCH to republish the NAT maps.  This should not be necessary in normal operation.
-* mapping - Controls if port mapping requests will be sent to the NAT (the command line option of -nonatmap can set it to disable on startup). This gives the ability of still using NAT for getting public IP but without opening the ports in the NAT.
+* status - 用于显示NAT类型、外网IP（the external IP）以及当前映射的端口。
+* reinit - 重新初始化NAT模块。当你更换路由器或将路由器由NAT切换到UPnP模式的时候，使用该参数。
+* republish - 该参数会让FreeSWITCH重新（向路由器等）发布NAT映射信息。 正常情况下，没有必要使用该参数。
+* mapping - 该参数用于控制是否向NAT设备发送端口映射请求(可使用-nonatmap参数在系统启动时关闭该功能). 之所以存在该参数，是因为有可能需要通过NAT获取公网IP地址，而不需要通过NAT开启端口。
 
-Note: sticky makes the mapping stay across FreeSWITCH restarts.  It gives you a permanent mapping.
+Note: sticky参数用于将映射信息固化下来，在下次FreeSWITCH重启后映射仍然生效。 
 
-Warning: If you have multiple interfaces with sip profiles using the same port, nat_map *will* get confused when it tries to map the same ports for multiple profiles.  Don't do that!
+警告: 如果你有多个网卡，并分别配置了使用相同端口的sip profiles。nat_map在映射端口的时候，会被弄昏头的，不需要将端口映射到哪个sip profile上面，千万别干这种挫事！
 
 ###regex###
+执行正则表达式匹配。该参数会根据是否提供<subst string>参数而实现不同的功能，如下：  
+  
+* 如果没提供该参数, ''regex'' 将会执行正常的匹配，返回true或者false。
+* 如果提供该参数，如果匹配成功的话，会返回指定的子串。如果匹配失败，则返回全部源字符串。
 
-Evaluate a regex (regular expression). This command behaves differently depending upon whether or not a substitution string is supplied:
-* If a subst is not supplied, ''regex'' returns either true or false
-* If a subst is supplied, ''regex'' returns the subst value on a true condition, or the source string on a false condition (this is an update as of revision 14727, previously the regex would return "false" on a failed match.)
+默认的正则表达式分界符是|（管道符）。可以更改为~或者/，只要在字符串的前面加上'm:'。
 
-The regex delimiter defaults to the | (pipe) character. The delimiter may be changed to ~ (tilde) or / (forward slash) by prefixing the regex with ''m:'' (new behavior as of 14727).
+	Usage: regex <data>|<pattern>[|<subst string>]
+	       regex m:/<data>/<pattern>[/<subst string>]
+	       regex m:~<data>~<pattern>[~<subst string>]
 
-<pre>
-Usage: regex <data>|<pattern>[|<subst string>]
-       regex m:/<data>/<pattern>[/<subst string>]
-       regex m:~<data>~<pattern>[~<subst string>]
-</pre>
+例子:
 
-Examples:
- regex test1234|\d                  <== Returns "true"
- regex m:/test1234/\d               <== Returns "true"
- regex m:~test1234~\d               <== Returns "true"
- regex test|\d                      <== Returns "false"
- regex test1234|(\d+)|$1            <== Returns "1234"
- regex sip:foo@bar.baz|^sip:(.*)|$1 <== Returns "foo@bar.baz"
- regex testingonetwo|(\d+)|$1       <== Returns "testingonetwo" (no match)
- regex m:~30~/^(10|20|40)$/~$1      <== Returns "30" (no match)
- regex m:~30~/^(10|20|40)$/~$1~n    <== Returns "" (no match)
- regex m:~30~/^(10|20|40)$/~$1~b    <== Returns "false" (no match)
+	 regex test1234|\d                  <== Returns "true"
+	 regex m:/test1234/\d               <== Returns "true"
+	 regex m:~test1234~\d               <== Returns "true"
+	 regex test|\d                      <== Returns "false"
+	 regex test1234|(\d+)|$1            <== Returns "1234"
+	 regex sip:foo@bar.baz|^sip:(.*)|$1 <== Returns "foo@bar.baz"
+	 regex testingonetwo|(\d+)|$1       <== Returns "testingonetwo" (no match)
+	 regex m:~30~/^(10|20|40)$/~$1      <== Returns "30" (no match)
+	 regex m:~30~/^(10|20|40)$/~$1~n    <== Returns "" (no match)
+	 regex m:~30~/^(10|20|40)$/~$1~b    <== Returns "false" (no match)
 
+版本14727中的逻辑是，如果源字符串匹配匹配到结果，那么条件为false，但是这里仍有一个匹配结果，结果是1001。（这里的翻译是照字面翻译，小伙伴们，你们看懂了没？）      
 Logic in revision 14727 if the source string matches the result then the condition was false however there was a match and it is 1001.
 
- regex 1001|/(^\d{4}$)/|$1
+    regex 1001|(^\d{4}$)|$1
 
 * See also [[Regular_Expression]]
 
 ###reload###
 
-Reload a module.
+重新加载模块。
 
- Usage: reload [-f] <mod_name>
+ 	用法: reload [-f] <mod_name>
 
 ###reloadacl###
 
-Reload ACL.
+重新加载ACL规则。
 
- Usage: reloadacl [reloadxml]
+ 	用法: reloadacl [reloadxml]
 
 ###reloadxml###
-Reload conf/freeswitch.xml settings
+重新加载conf/freeswitch.xml的配置信息到内存中。
 
- Usage: reloadxml
+ 	用法: reloadxml
 
 ###show###
-Display various reports
+输出多种（模块）状态报告。
 
- Usage: show <item> where <item> is:
-  codec
-  endpoint
-  application
-  api
-  dialplan
-  file
-  timer
-  calls [count]
-  channels [count|like <match string>]
-  calls
-  detailed_calls
-  bridged_calls
-  detailed_bridged_calls
-  aliases
-  complete
-  chat
-  management
-  modules
-  nat_map
-  say
-  interfaces
-  interface_types
-  tasks
-  limits
+	 用法: show <item>
+	  item类型如下:
+	  codec
+	  endpoint
+	  application
+	  api
+	  dialplan
+	  file
+	  timer
+	  calls [count]
+	  channels [count|like <match string>]
+	  calls
+	  detailed_calls
+	  bridged_calls
+	  detailed_bridged_calls
+	  aliases
+	  complete
+	  chat
+	  management
+	  modules
+	  nat_map
+	  say
+	  interfaces
+	  interface_types
+	  tasks
+	  limits
  
-XML formatted: show foo as xml
+XML格式输出: show foo as xml
 
- Change delimiter: show foo as delim |
+修改输出分隔符: show foo as delim |
 
-* codec - list codecs
-* endpoint - list endpoints
-* application - list applications
-* api - list api's
-* dialplan - list dialplan modules
-* file - list supported file formats
-* timer - list timer modules
-* calls - list current calls [count] 
+* codec - 列出所有编码
+* endpoint - 列出所有endpoint类型模块
+* application - 列出所有应用程序
+* api - 列出所有api
+* dialplan - 列出拨号方案涉及的模块
+* file - 列出所有支持的文件类型
+* timer - 列出计时器timer模块
+* calls - 列出当前的通话[数量统计] 
 * channels - list current channels [count|like <match string>] ''see [[Channels vs Calls]]''
 * bridged_calls - same as "show calls"
 * detailed_calls - like "show calls" but with more fields
