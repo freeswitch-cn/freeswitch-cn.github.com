@@ -286,7 +286,6 @@ Enables verbose events. Verbose events have '''every''' channel variable in '''e
 +E将会议呼叫模式返回组成员（以：\_:隔开各成员），关于企业呼叫请参考[[Freeswitch\_IVR\_Originate#Enterprise\_originate|enterprise fashion]].
 
 请注意：如果你需要设置在外呼通道上面设置用户变量，需要确保你的domain或被拨打组的变量列表里面没有设置dial-string和group-dial-string，用设置用户默认组里面的dial-string和group-dial-string来替代。这样的话，group_call将会返回user/101,user/将会设置你的外呼通道变量。
-Please note: If you need to have outgoing user variables set in outgoing channel, make sure you don't have dial-string and group-dial-string in your domain or dialed group variables list, instead set dial-string or group-dial-string in default group of the user. This way group_call will return user/101 and user/ would set all your user variables to outgoing channel ...
 
 ###help###
 显示所有API命令的帮助信息。
@@ -446,42 +445,49 @@ XML格式输出: show foo as xml
 * dialplan - 列出拨号方案涉及的模块
 * file - 列出所有支持的文件类型
 * timer - 列出计时器timer模块
-* calls - 列出当前的通话[数量统计] 
-* channels - list current channels [count|like <match string>] ''see [[Channels vs Calls]]''
-* bridged_calls - same as "show calls"
-* detailed_calls - like "show calls" but with more fields
-* detailed_bridged_calls - like "show calls" but with more fields
-* aliases - list aliases - 
+* calls - 列出当前的通话[count] 
+* channels - 列出当前的通道 [count|like <match string>]    
+  注：关于calls与channels的对比，请参考[Channels vs Calls](http://wiki.freeswitch.org/wiki/Channels_vs_Calls)
+* bridged_calls - 和"show calls"相同
+* detailed_calls - 和"show calls"类似，但是显示字段更多
+* detailed_bridged_calls - 和"show calls"类似，但是显示字段更多
+* aliases - 列出所有别名（别名干啥用的，暂时未查到）
 * complete - list command complete tables
-* chat - list chat modules
+* chat - 列出所有chat模块，包括api、sms、conf等
 * management - list management?
-* modules - list modules
-* nat_map - list network address translation map
-* say - list available say modules with language supported
-* interfaces - list all interfaces
-* interface_types - list all interface types
-* tasks - list tasks
-* registrations - list user registration(s)
+* modules - 列出所有模块
+* nat_map - 列出地址映射表
+* say - 列出有支持语言的say模块
+* interfaces - 列出所有接口
+* interface_types - 列出所有接口类型
+* tasks - 列出任务
+* registrations - 列出所有注册用户
 
 #### Tips For Showing Calls and Channels ####
-The best way to get an understanding of all of the show calls/channels is to actually try them out. Recently (Sept 2011) there have been some additions to the show family:
+理解show calls/channels真义的最好方式是亲自去尝试。最近（2011.9）又在show命令家族中添加了几位：   
+
 * show detailed_calls
 * show bridged_calls
-* show detailed_bridged_calls
+* show detailed\_bridged_calls
 
-These three take the place of simply doing "show calls". Note that '''show detailed_calls''' replaces '''show distinct_channels'''. It is similar, but gives more information. Also note that there isn't a "show detailed_channels" command, however using "show detailed_calls" will yield the same net result: you will get detailed information about one-legged calls and bridged calls by using '''show detailed_calls''', so get used to using this new command.
+这三个命令用于取代简单的"show calls"。    
+需要注意的是，"show detailed_calls"取代的是"show distinct\_channels"。命令都是相似的，但是返回信息更多。    
+同样需要注意的是，这里并没有"show detailed\_channels"命令，但是使用"show detailed\_calls"会让你得到相同的结果。该命令能让你得到“单腿通话”（one-legged calls）或桥接后的通话信息，所以，少年，习惯这条新命令吧！
 
-Another tip: sometimes you need to gather related or specific uuids. If you set the presence_data channel variable then you can use:
+
+小贴士2: 有时，你需要获取某个特定的uuid，可以使用下面的方式。    
+假设你设置了通道变量presence_data，那可以使用下面的命令搜索符合条件的通道（即含有foo的通道）：
  show channels like foo
 
-The '''like''' directive follows these fields:
+like将会搜索下面的关键字段：
+
 * uuid
 * channel name
 * caller id name
 * caller id number
 * presence_data
 
-NOTE: '''presence_data''' must be set during '''bridge''' or '''originate''' and not after the channel is established.
+注: **presence_data** 必须在**bridge**或**originate**期间设置，而不是在通道已经建立完成后才设置。
 
 ###shutdown###
 Stop the FreeSWITCH program. This only works from the CLI, as an API call, you should be using 'fsctl shutdown'
