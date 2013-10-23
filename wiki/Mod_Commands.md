@@ -490,63 +490,64 @@ like将会搜索下面的关键字段：
 注: **presence_data** 必须在**bridge**或**originate**期间设置，而不是在通道已经建立完成后才设置。
 
 ###shutdown###
-Stop the FreeSWITCH program. This only works from the CLI, as an API call, you should be using 'fsctl shutdown'
+停止FreeSWITCH程序。该命令只在cli中起作用，如果想作为api进行调用，需要使用**fsctl shutdown**。
 
-Warning! Shutdown from the CLI ignores arguments and exits immediately!
+警告！在cli中运行shutdown会忽略掉参数，并立即退出！
 
- Usage: fsctl shutdown [cancel|elegant|asap|restart|now]
-* cancel - discontinue a previous shutdown request.
-* elegant - wait for all traffic to stop; do not prevent new traffic.
-* asap - wait for all traffic to stop; do not allow new traffic.
-* restart - restart FreeSWITCH immediately following the shutdown.
-* now - shutdown FreeSWITCH immediately.
+	用法: fsctl shutdown [cancel|elegant|asap|restart|now] 
 
-When giving "elegant", "asap" or "now" it's also possible to give the restart command:
- Usage: fsctl shutdown [elegant|asap|now] restart
+* cancel - 终止上一次提交的shutdown请求
+* elegant - 等待所有通话都停止后才关闭，允许新发起通话.
+* asap - 等待所有通话都停止后才关闭， 不再允许新通话.
+* restart - 在执行完“shutdown”后立即重启FreeSWITCH。
+* now - 立即重启FreeSWITCH。
+
+当使用"elegant", "asap"或者"now"参数后，还可以后跟restart命令，如下：
+
+ 	用法: fsctl shutdown [elegant|asap|now] restart
 
 ###status###
-Show current status
+显示当前FreeSWITCH的运行状态
 
- Usage: status
+ 	 用法: status
 
- freeswitch@internal> status
- UP 0 years, 0 days, 1 hour, 28 minutes, 4 seconds, 208 milliseconds, 305 microseconds
- FreeSWITCH is ready
- 4 session(s) since startup
- 0 session(s) 0/30                        <- Most channels to create per second .. from switch.conf.xml
- 1000 session(s) max                      <- Max number of sessions to allow at any given time .. from switch.conf.xml
- min idle cpu 0.00/100.00                 <- Minimum idle CPU before refusing calls .. from switch.conf.xml if it's enabled.
+	 freeswitch@internal> status
+	 UP 0 years, 0 days, 1 hour, 28 minutes, 4 seconds, 208 milliseconds, 305 microseconds
+	 FreeSWITCH is ready
+	 4 session(s) since startup
+	 0 session(s) 0/30                        <- 每秒创建的最大通话数 .. 来自switch.conf.xml
+	 1000 session(s) max                      <- 同时并存的最大通话数 .. 来自switch.conf.xml
+	 min idle cpu 0.00/100.00                 <- 达到拒接电话标准的最小闲置CPU值 .. 来自switch.conf.xml （如果该值被启动的话）.
 
 ###strftime_tz###
-Displays formatted time, converted to a specific timezone.  See /usr/share/zoneinfo/zone.tab for the standard list of Linux timezones.
+根据不同的时区，显示格式化后的时间。需要查看linux时区标准列表的，请查看/usr/share/zoneinfo/zone.tab。
 
- Usage: strftime_tz <timezone> [format_string]
+    用法: strftime_tz <timezone> [format_string]
 
-Example: strftime_tz US/Eastern %Y-%m-%d %T
+示例: strftime_tz US/Eastern %Y-%m-%d %T
 
 ###unload###
-Unload external module.
+卸载外部模块
 
- Usage: unload [-f] <mod_name>
+ 	用法: unload [-f] <mod_name>
 
 ###version###
-Show version of the switch
+显示FreeSWITCH的版本号
 
- Usage: version [short]
+	用法: version [short]
 
 ###xml_locate###
+xml\_locate root: 返回FreeSWITCH使用的所有XML    
+xml\_locate <section\>: 返回指定<section\>的XML
 
-xml_locate root: Will return all XML being used by FreeSWITCH
-xml_locate <section>: Will return the XML corresponding to the specified <section>
-<pre>
-xml_locate directory
-xml_locate configuration
-xml_locate dialplan
-xml_locate phrases
-</pre>
- Usage: xml_locate [root | <section> | <section> <tag> <tag_attr_name> <tag_attr_val>]
+	xml_locate directory
+	xml_locate configuration
+	xml_locate dialplan
+	xml_locate phrases
 
- Example: xml_locate directory domain name example.com
+    用法: xml_locate [root | <section> | <section> <tag> <tag_attr_name> <tag_attr_val>]
+
+示例: xml_locate directory domain name example.com
 
 ###xml_wrap###
 
