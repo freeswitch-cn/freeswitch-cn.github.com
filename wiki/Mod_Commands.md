@@ -550,117 +550,130 @@ xml\_locate <section\>: 返回指定<section\>的XML
 示例: xml_locate directory domain name example.com
 
 ###xml_wrap###
+使用xml来包装API命令
 
-Wrap another API command in XML.
+ 	用法: xml_wrap <command> <args>
 
- Usage: xml_wrap <command> <args>
-
-##Call Management Commands##
+##呼叫管理命令##
 
 ###break###
-Deprecated. See uuid_break.
+被废弃，请查看uuid_break命令
 
 ###create_uuid###
-Creates a new UUID and returns it as a string.
+创建一个新的UUID，并以字符串的形式返回。
 
-Usage: create_uuid
+	用法: create_uuid
 
 ###originate###
-Originate a new call.
+发起一个新的呼叫
 
     Usage: originate <call_url> <exten>|&<application_name>(<app_args>) 
     [<dialplan>] [<context>] [<cid_name>] [<cid_num>] [<timeout_sec>]
 
 
-'''Parameters:'''
-* <call_url> URL you are calling. <br> For more info on sofia SIP URL syntax see: [[Sofia|FreeSwitch Endpoint Sofia]]
-* Destination, one of:
-** <exten> Destination number to enter dialplan with
-** &<application_name>(<app_args>)
-*** "&" indicates what follows is an application name, not an exten
-*** (<app_args>) is optional (not all applications require parameters, eg park)
-*** Here is a list of valid application names that can be used here: <br>park, bridge, javascript/lua/perl, playback (remove mod_native_file), and many others.
-*** Note: Use single quotes to pass arguments with spaces, e.g. '&lua(test.lua arg1 arg2)'
-*** Note: There is no space between & and the application name
-* <dialplan> Defaults to 'XML' if not specified.
-* <context> Defaults to 'default' if not specified.
-* <cid_name> CallerID name.
-* <cid_num> CallerID number.
-* <timeout_sec> Timeout in seconds.
+**参数:**    
 
-'''Options:'''
+* <call_url\> 呼叫目标URL. <br> 想多了解sofia sip URL语法的童鞋可以参考: [[Sofia|FreeSwitch Endpoint Sofia]]
+* 目标有如下几类:
+  + <exten> 进入拨号方案进行路由的目标号码
+  + &<application\_name\>(<app\_args\>)
+      + "&" 表明后面跟的是应用名称，不是一个目标号码
+      + (<app\_args\>) 可选参数 (不是所有应用都需要传递参数，比如park)
+      + 下面是可以用在'&'后面的应用列表：<br>park, bridge, javascript/lua/perl, playback (移除mod\_native\_file), and many others.
+      + 注1: 用单引号传递含有空格的参数，如'&lua(test.lua arg1 arg2)'
+      + 注2: 在&和application_name之间不能含有空格
+* <dialplan> 默认为'XML'，如果没有特别指定的话。
+* <context> 默认为'default'，如果没有特别指定的话。
+* <cid_name> 主叫名称.
+* <cid_num> 主叫号码.
+* <timeout_sec> 超时时长（单位为秒）.
 
-These options can be used in curly braces, example: "originate {ignore_early_media=true}sofia/example/user 8334".
+**可选参数:**   
+这些可选参数使用大括号包裹，如：
 
-Options must be separated by ',', Example: "originate {ignore_early_media=true,originate_timeout=2}sofia/example/user 8334"
+	originate {ignore\_early_media=true}sofia/example/user 8334
 
-* group_confirm_key
-* group_confirm_file
+参数需要使用逗号隔开，例子如下：
+
+	originate {ignore_early_media=true,originate_timeout=2}sofia/example/user 8334
+
+* group\_confirm_key
+* group\_confirm_file
 * forked_dial
-* fail_on_single_reject
-* ignore_early_media
-* return_ring_ready
+* fail\_on\_single_reject
+* ignore\_early_media
+* return\_ring_ready
 * originate_retries
-* originate_retry_sleep_ms
-* origination_caller_id_name
-* origination_caller_id_number
+* originate\_retry\_sleep_ms
+* origination\_caller\_id_name
+* origination\_caller\_id_number
 * originate_timeout
-* sip_auto_answer
+* sip\_auto_answer
 
-[[Channel_Variables#Originate_related_variables|Description of originate's related variables]]
+更多变量，参考下面的地址：   
+[[Channel\_Variables#Originate\_related_variables|Description of originate's related variables]]
 
-'''Examples:'''
-So you can call a locally registered sip endpoint 300 and park the call like so (Note that the "example" profile used here must be the one your local user you want to call is registered to)
+**例子：**   
+假设，你想拨打一个本地注册的sip终端，号码为300，然后执行park操作，如下：    
+(注：本例中用的sip profile是example，你在实际测试的时候，需要改成你本地电话注册的sip
+profile，一般为internal)
 
     originate sofia/example/300%pbx.internal &park()
 
-or you could instead connect a remote sip endpoint to extension 8600
+又或者，你想将远程注册的sip终端连到拨号规则8600上
 
     originate sofia/example/300@foo.com 8600
 
-or you could instead connect a remote SIP endpoint to another remote extension
+再或者，你想将远程注册的sip终端连到另一个远程终端
 
     originate sofia/example/300@foo.com &bridge(sofia/example/400@bar.com)
 
-or you could even run a javascript application test.js
+还或者， 你甚至可以在接通后执行javascript脚本test.js
 
     originate sofia/example/1000@somewhere.com &javascript(test.js)
 
-To run a javascript with arguments you must surround it in quotes.
+如果运行的javascript脚本需要传递参数，则需要使用单引号括起来。
 
     originate sofia/example/1000@somewhere.com '&javascript(test.js myArg1 myArg2)'
 
-Setting channel variables before doing the originate
+在发起呼叫前，设置通道变量
 
     originate {ignore_early_media=true}sofia/mydomain.com/18005551212@1.2.3.4 15555551212
 
-Setting variable to send to another FS box during originate
+在发起呼叫期间，设置通道变量，并传递给另一个FS
+
     originate {sip_h_X-varA=111,sip_h_X-varB=222}sofia/mydomain.com/18005551212@1.2.3.4 15555551212
 
-Note: you can set any channel variable, even custom ones. Use single quotes to enclose values with spaces, commas, etc. 
+注: 你可以设置任何类型的通道变量，即使是自定义变量。如果变量的值含有空格或逗号等符号，使用单引号括起来即可。
+ 
     originate {my_own_var=my_value}sofia/mydomain.com/that.ext@1.2.3.4 15555551212
     originate {my_own_var='my value'}sofia/mydomain.com/that.ext@1.2.3.4 15555551212
 
-If you need to fake the ringback to the originated endpoint try this:
+如果你想自造一段回铃音给被呼叫方听，try this：
 
     originate {ringback=\'%(2000,4000,440.0,480.0)\'}sofia/example/300@foo.com &bridge(sofia/example/400@bar.com)
 
-If you need to make originate return immediately when the channel is in "Ring-Ready" state try this:
-    originate {return_ring_ready=true}sofia/gateway/someprovider/919246461929 &socket(127.0.0.1:8082 async full)
-see here for more info on [http://blog.godson.in/2010/12/use-of-returnringready-originate.html return_ring_ready ]
+如果你想发起呼叫后，通道进入"Ring-Ready"状态后就立即返回，try this:
 
-You can even set music on hold for the ringback if you want:
+    originate {return_ring_ready=true}sofia/gateway/someprovider/919246461929 &socket(127.0.0.1:8082 async full)
+
+更多信息请查阅[return ring ready](http://blog.godson.in/2010/12/use-of-returnringready-originate.html)
+
+你可以将保持等待音乐设置为回铃音，if you want:
 
     originate {ringback=\'/path/to/music.wav\'}sofia/gateway/name/number &bridge(sofia/gateway/name/othernumber)
 
-You can originate a call in the background (asynchronously) and playback a message with a 60 second timeout.
+你可以在后台发起一个呼叫（异步模式），播放一段60秒的提示消息：
 
     bgapi originate {ignore_early_media=true,originate_timeout=60}sofia/gateway/name/number &playback(message)
 
-You can specify the UUID of an originated call by doing the following:
-* Use create_uuid to generate a UUID to use.
-* This will allow you to kill an originated call before it is answered by using uuid_kill.
-* If you specify origination_uuid it will remain the UUID for answered call leg for the whole session.
+
+你可以指定被呼叫方的UUID，只需要下面几步：
+
+* 使用create_uuid创建一个UUID，待用。
+* 使用uuid_kill直接可以在对方未接听前杀掉该次呼叫。
+* 使用origination\_uuid指定uuid之后，被叫方会在整个通话的生命周期中使用该UUID。
+*
      originate {origination_uuid=...}user/100@domain.name.com
 
 Here's an example of originating a call to the echo conference (an external sip URL) and bridging it to a local user's phone:
