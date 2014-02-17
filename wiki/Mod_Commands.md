@@ -676,163 +676,170 @@ profile，一般为internal)
 *
      originate {origination_uuid=...}user/100@domain.name.com
 
-Here's an example of originating a call to the echo conference (an external sip URL) and bridging it to a local user's phone:
+下面例子作用：发起一个到外部sip服务器echo conference的呼叫，然后转接到本地用户分机上
 
     originate sofia/internal/9996@conference.freeswitch.org &bridge(user/105@default)
 
-Here's an example of originating a call to an extension in a different context than 'default' (required for the FreePBX which uses context_1, context_2, etc.):
+下面例子作用：向'default'以外的context上的分机发起呼叫（FreePBX会用到该特性，如context名字为context\_1，context\_2等等）
 
     originate sofia/internal/2001@foo.com 3001 xml context_3
 
-You can also originate to multiple extensions as follows:
+如果你想对多个分机发起呼叫，可以使用下面的命令：
+
     originate user/1001,user/1002,user/1003 &park()
 
-To put an outbound call into a conference at early media, either of these will work (they are effectively the same thing)
+如果需要在收到early media的时候，将外呼的电话转入会议中，可以使用下面的两个命令，作用一样
+
     originate sofia/example/300@foo.com &conference(conf_uuid-TEST_CON)
     originate sofia/example/300@foo.com conference:conf_uuid-TEST_CON inline
     
        ( See [[Misc._Dialplan_Tools_InlineDialplan]] for more detail on 'inline' Dialplans )
 
-An example of using loopback and inline on the A-leg can be found [http://lists.freeswitch.org/pipermail/freeswitch-users/2013-January/091769.html here]
+下面的例子演示如何在A-leg上面使用loopback和inline    
+[我是例子](http://lists.freeswitch.org/pipermail/freeswitch-users/2013-January/091769.html)
 
 ###pause###
-Pause <uuid> media
+停止指定通道的媒体播放
 
-Usage: pause <uuid> <on|off>
+	用法: pause <uuid> <on|off>
 
 ###uuid_answer###
-Answer a channel
+应答
 
-Usage: uuid_answer <uuid>
+	用法: uuid_answer <uuid>
 
-* See Also: [[Misc._Dialplan_Tools_answer]]
+* See Also: [[Misc.Dialplan\_Tools\_answer]]
 
 ###uuid_audio###
-Adjust the audio levels on a channel or mute (read/write) via a media bug.
+调整信道上面的音量，或直接通过一个媒体bug进行静音（读/写）
 
-Usage: uuid_audio <uuid> [start [read|write] [mute|level <level>]|stop]
+	用法: uuid_audio <uuid> [start [read|write] [mute|level <level>]|stop]
 
-''level'' is in the range from -4 to 4, 0 being the default value.
+**level**的值范围从-4到4,默认值为0。
 
 ###uuid_break###
-Break out of media being sent to a channel. For example, if an audio file is being played to a channel, issuing uuid_break will discontinue the media and the call will move on in the dialplan, script, or whatever is controlling the call. 
+断开发送至指定信道的媒体流。举例来说，如果此时正在信道上面播放一个音频文件，使用uuid_break命令，就会断开媒体，呼叫会顺着拨号方案、脚本等往下执行。
 
-Usage: uuid_break <uuid> [all]
+	用法: uuid_break <uuid> [all]
 
-If the '''all''' flag is used then all audio files/prompts/etc. that are queued up to be played to the channel will be removed, whereas without the '''all''' flag only the currently playing file will be discontinued.
-
+如果使用**all**标记的话，所有信道上面正在排队等待播放的音频文件都会被移除，但是如果没有**all**标记的话，只有当前正在播放的音频文件会被断开。
 
 ###uuid_bridge###
-Bridge two call legs together. 
+桥接两条呼叫的腿。
 
-Usage: uuid_bridge <uuid> <other_uuid>
+	Usage: uuid_bridge <uuid> <other_uuid>
 
-uuid_bridge needs atleast any one leg to be answered.
+uuid_bridge至少需要有一条腿是被呼通的。
 
 ###uuid_broadcast###
-Execute an arbitrary dialplan application on a specific uuid. If a filename is specified then it is played into the channel(s). To execute an application use "app::args" syntax.
+在一个指定UUID的信道上执行任意一个拨号方案程序。如果指定了某录音文件名，则代表将会在该信道上播放该文件。
+执行拨号方案程序的语法规则是“app::args”。
 
-Usage: uuid_broadcast <uuid> <path> [aleg|bleg|both]
+	用法: uuid_broadcast <uuid> <path> [aleg|bleg|both]
 
-Execute an application on a chosen leg(s) with optional hangup afterwards:
+在选定的腿上执行应用程序，执行完毕后挂断，并指明挂机原因。
 
-Usage: uuid_broadcast <uuid> app[![hangup_cause]]::args [aleg|bleg|both]
+	用法: uuid_broadcast <uuid> app[![hangup_cause]]::args [aleg|bleg|both]
 
-Examples:
+具体应用举例如下:
 
-<pre>
- uuid_broadcast 336889f2-1868-11de-81a9-3f4acc8e505e sorry.wav both
- uuid_broadcast 336889f2-1868-11de-81a9-3f4acc8e505e say::en\snumber\spronounced\s12345 aleg
- uuid_broadcast 336889f2-1868-11de-81a9-3f4acc8e505e say!::en\snumber\spronounced\s12345 aleg
- uuid_broadcast 336889f2-1868-11de-81a9-3f4acc8e505e say!user_busy::en\snumber\spronounced\s12345 aleg
- uuid_broadcast 336889f2-1868-11de-81a9-3f4acc8e505e playback!user_busy::sorry.wav aleg
-</pre>
+	 uuid_broadcast 336889f2-1868-11de-81a9-3f4acc8e505e sorry.wav both
+	 uuid_broadcast 336889f2-1868-11de-81a9-3f4acc8e505e say::en\snumber\spronounced\s12345 aleg
+	 uuid_broadcast 336889f2-1868-11de-81a9-3f4acc8e505e say!::en\snumber\spronounced\s12345 aleg
+	 uuid_broadcast 336889f2-1868-11de-81a9-3f4acc8e505e say!user_busy::en\snumber\spronounced\s12345 aleg
+	 uuid_broadcast 336889f2-1868-11de-81a9-3f4acc8e505e playback!user_busy::sorry.wav aleg
+
 
 ###uuid_buglist###
-List the media bugs on channel
+列出信道上面的媒体bug（media bugs）
 
-Usage: uuid_buglist <uuid>
+	用法: uuid_buglist <uuid>
 
 ###uuid_chat###
+发送聊天信息
 
-Send a chat message.
+ 	用法: <uuid> <text>
 
- -USAGE: <uuid> <text>
+如果和会话（session，由uuid指定）相关的终端有一个receive_event handler，该消息会被发往终端，并以及时消息的形式显示出来。
 
-If the endpoint associated with the session <uuid> has a receive_event handler, this message gets sent to that session and is interpreted as an instant message.
+###uuid\_debug\_media###
 
-###uuid_debug_media###
+该命令过去为uuid\_debug\_audio,但是因为加入了一些视频的内容，所以改为现在的名字。
 
-The command was uuid_debug_audio, been changed into the current name when video options was added.
+调试媒体流
 
-Debug media
+用法:
 
-Usage:
+ 	<uuid> <read|write|both|vread|vwrite|vboth> <on|off>
 
- <uuid> <read|write|both|vread|vwrite|vboth> <on|off>
-
-Use "read" or "write" for the audio direction to debug, or "both" for both direction. And prefix with v for video.
+使用“read”、“write”或者“both”（同时调试两个方向）作为语音流的方向，以进行调试。
+在前面加上“v”，代表视频流的调试。
 
 #### Read Format ####
 "R %s b=%4ld %s:%u %s:%u %s:%u pt=%d ts=%u m=%d\n"
 
 where the values are:
-* switch_channel_get_name(switch_core_session_get_channel(session)),
-* (long) bytes,
-* my_host, switch_sockaddr_get_port(rtp_session->local_addr),
-* old_host, rtp_session->remote_port,
-* tx_host, switch_sockaddr_get_port(rtp_session->from_addr),
-* rtp_session->recv_msg.header.pt, 
-* ntohl(rtp_session->recv_msg.header.ts), 
-* rtp_session->recv_msg.header.m
+
+	* switch_channel_get_name(switch_core_session_get_channel(session)),
+	* (long) bytes,
+	* my_host, switch_sockaddr_get_port(rtp_session->local_addr),
+	* old_host, rtp_session->remote_port,
+	* tx_host, switch_sockaddr_get_port(rtp_session->from_addr),
+	* rtp_session->recv_msg.header.pt, 
+	* ntohl(rtp_session->recv_msg.header.ts), 
+	* rtp_session->recv_msg.header.m
 
 #### Write Format ####
 "W %s b=%4ld %s:%u %s:%u %s:%u pt=%d ts=%u m=%d\n"
 
 where the values are:
-* switch_channel_get_name(switch_core_session_get_channel(session)),
-* (long) bytes,
-* my_host, switch_sockaddr_get_port(rtp_session->local_addr),
-* old_host, rtp_session->remote_port,
-* tx_host, switch_sockaddr_get_port(rtp_session->from_addr),
-* send_msg->header.pt, 
-* ntohl(send_msg->header.ts), 
-* send_msg->header.m);
+
+	* switch_channel_get_name(switch_core_session_get_channel(session)),
+	* (long) bytes,
+	* my_host, switch_sockaddr_get_port(rtp_session->local_addr),
+	* old_host, rtp_session->remote_port,
+	* tx_host, switch_sockaddr_get_port(rtp_session->from_addr),
+	* send_msg->header.pt, 
+	* ntohl(send_msg->header.ts), 
+	* send_msg->header.m);
 
 ###uuid_deflect###
-Deflect an answered SIP call off of FreeSWITCH by sending the REFER method
+通过发送REFER方法，将当前FreeSWITCH上面的某个已经应答的sip呼叫转移走。
 
-Usage: uuid_deflect <uuid> <sip URL>
+	用法: uuid_deflect <uuid> <sip URL>
 
-uuid_deflect waits for the final response from the far end to be reported.  It returns the sip fragment from that response as the text in the FreeSWITCH response to uuid_deflect.  If the far end reports the REFER was successful, then FreeSWITCH will issue a bye on the channel.
+在命令执行后，uuid\_deflect等待远端的应答，以此判断转移是否成功。远端返回的sip内容（sip fragment)将会作为uuid\_deflect命令的返回结果。如果远端报告REFER成功，FreeSWITCH将会向那条信道发送bye信令。
 
-Example:  
-   uuid_deflect 0c9520c4-58e7-40c4-b7e3-819d72a98614 sip:info@example.net
+举例如下:
+  
+	uuid_deflect 0c9520c4-58e7-40c4-b7e3-819d72a98614 sip:info@example.net
 
-Response:  
-   Content-Type: api/response
-   Content-Length: 30
-
-   +OK:SIP/2.0 486 Busy Here
+返回内容:
+  
+	Content-Type: api/response
+	Content-Length: 30
+	
+	+OK:SIP/2.0 486 Busy Here
 
 ###uuid_displace###
-Displace the audio for the target <uuid> with the specified audio <file>.
+将目标信道上面的语音流替换为指定的录音（文件）。
 
-'''Parameters:'''
-* uuid = Unique ID of this call (see 'show channels')
-* start|stop = Start/Stop this action
-* file = path to an audio source (wav, shout, etc...)
-* limit = number of seconds before terminating the displacement
-* mux = cause the original audio to be mixed together with 'file', i.e. you can still converse with the other party while the file is playing
+**参数：**
 
-'''Usage:'''
-uuid_displace <uuid> [start|stop] <file> [<limit>] [mux]
+	* uuid = 通话的唯一标识符（通过“show channels"可查看到）
+	* start|stop = 启动/停止该操作
+	* file = 要播放的语音源(wav，shout等等)路径
+	* limit = 语音替换（文件）的最大播放时长，秒数
+	* mux = 该选项将会导致原始的语音流与录音（文件）进行混音。比如，你在替换语音的时候，仍想与另一端进行会话（即在听到替换的录音文件的时候，也能听到对方的声音）。
 
-'''Examples:'''
-<pre>
-cli> uuid_displace 1a152be6-2359-11dc-8f1e-4d36f239dfb5 start /sounds/test.wav 60
-cli> uuid_displace 1a152be6-2359-11dc-8f1e-4d36f239dfb5 stop /sounds/test.wav
-</pre>
+**用法：**
+
+	uuid_displace <uuid> [start|stop] <file> [<limit>] [mux]
+
+**举例如下：**
+
+	uuid_displace 1a152be6-2359-11dc-8f1e-4d36f239dfb5 start /sounds/test.wav 60
+	uuid_displace 1a152be6-2359-11dc-8f1e-4d36f239dfb5 stop /sounds/test.wav
 
 ###uuid_display###
 
