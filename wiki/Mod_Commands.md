@@ -842,76 +842,77 @@ where the values are:
 	uuid_displace 1a152be6-2359-11dc-8f1e-4d36f239dfb5 stop /sounds/test.wav
 
 ###uuid_display###
+更新话机的显示内容，前提是话机支持该功能。目前有Polycom和Snom等部分Sip话机支持该功能。
 
-Updates the display on a phone if the phone supports this.  This works on some SIP phones right now including Polycom and Snom.
+	用法: <uuid> [<display>]
 
- -USAGE: <uuid> [<display>]
+该命令会导致重新协商语音编码。SIP->RTP包的大小应该是0.020。如果在SPA系统话机上，设置为0.030的话，会引起DTMF延迟（DTMF lag）。当话机上的按键被按下的时候，我们可以通过fs_cli看到，但是会有4到6秒的延迟。
 
-This command makes the phone re-negotiate the codec. The SIP -> RTP Packet Size should be 0.020. If it is set to 0.030 on the SPA series phones it causes a DTMF lag. When DTMF keys are pressed on the phone they are can be seen on the fs_cli 4-6 seconds late.
+###uuid\_dual\_transfer###
+将处于通话中的双方分别转移到不同的目的地。
 
-###uuid_dual_transfer###
-
-Transfer each leg of a call to different destinations.
-
- 		-USAGE: <uuid> <A-dest-exten>[/<A-dialplan>][/<A-context>] <B-dest-exten>[/<B-dialplan>][/<B-context>]
+	-USAGE: <uuid> <A-dest-exten>[/<A-dialplan>][/<A-context>] <B-dest-exten>[/<B-dialplan>][/<B-context>]
 
 
 ###uuid_dump###
-Dumps all variable values for a session.
+导出指定会话中的所有变量
 
-Usage: uuid_dump <uuid> [format]
+	Usage: uuid_dump <uuid> [format]
 
-Format options: XML (any others?)
+导出格式: XML 
 
-###uuid_early_ok###
-Stops the process of ignoring early media, i.e. if ignore_early_media=true it stops ignoring early media and responds normally.
+###uuid\_early\_ok###
+停止忽略早期媒体（即正常播放early media）。
+如果此时ignore_early_media=true，该命令将会停止忽略早期媒体（让参数ignore_early_media设置不起作用），并正常播放。
 
-Usage: uuid_early_ok <uuid>
+用法: uuid\_early\_ok <uuid>
 
 ###uuid_exists###
-Checks whether a given UUID exists.
+检查给定的uuid是否存在。
 
-Usage: uuid_exists <uuid>
+用法: uuid_exists <uuid>
 
-###uuid_flush_dtmf###
-Flush queued DTMF digits
+###uuid\_flush\_dtmf###
+刷新DTMF数字缓存，将在排队的DTMF全部送出
 
-Usage: uuid_flush_dtmf <uuid>
+Usage: uuid\_flush\_dtmf <uuid>
 
 ###uuid_fileman###
-Manage the audio being played into a channel from a sound file
+管理正在信道中播放的音频流，该音频来自一个语音文件。
 
-Usage: uuid_fileman <uuid> <cmd:val>
+用法: uuid_fileman <uuid> <cmd:val>
 
-Commands are:
-* speed:<+[step]>|<-[step]>
-* volume:<+[step]>|<-[step]>
-* pause
-* stop
-* truncate
-* restart
-* seek:<+[samples]>|<-[samples]>
-Samples are the literally the number of samples in the file to jump forward or backward. In an 8kHz file, 8000 samples would represent one second, in a 16kHz file 16000 samples would be one second, etc.
+命令如下:
+
+	*speed:<+[step]>|<-[step]>    语速
+	*volume:<+[step]>|<-[step]>   音量
+	*pause						   暂停
+	*stop						   停止
+	*truncate					   截断
+	*restart                      重启
+	*seek:<+[samples]>|<-[samples]> 定位
+Samples，从字面上来讲，就是语音文件前进后退的取样数。在8KHZ的文件中，取样数8000代表的是一秒。同样，在16KHZ的文件中，16000代表的也是一秒。
+
 
 ###uuid_getvar###
-Get a variable from a channel.
+获取指定的信道变量
 
-Usage: uuid_getvar <uuid> <varname>
+用法: uuid_getvar <uuid> <varname>
 
 ###uuid_hold###
-Place a call on hold.
+保持通话
 
-Usage: 
-<pre>
-uuid_hold <uuid>           place a call on hold
-uuid_hold off <uuid>       switch off on hold
-uuid_hold toggle <uuid>    toggles call-state based on current call-state
-</pre>
+用法: 
+
+	uuid_hold <uuid>           保持通话
+	uuid_hold off <uuid>       结束保持，恢复正常通话
+	uuid_hold toggle <uuid>    在保持和取消保持间切换
+
 
 ###uuid_kill###
-Reset a specific <uuid> channel.
+重置（杀掉）指定的信道
 
-Usage: uuid_kill <uuid> [cause]
+用法: uuid_kill <uuid> [cause]
 
 ###uuid_limit###
 Apply or change limit(s) on a specified uuid.
